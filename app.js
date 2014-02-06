@@ -28,8 +28,22 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
 app.get('/users', user.list);
+
+//nav items
+app.get('/', routes.index);
+app.get('/workplay', routes.workplay);
+app.get('/doughnut', routes.doughnut);
+app.get('/statistics', routes.statistics);
+app.get('/settings', routes.settings);
+app.get('/add', routes.add);
+
+//other items
+app.get('/calendar', routes.calendar);
+app.get('/details', routes.details);
+app.get('/signup', routes.signup);
+app.get('/resetpassword', routes.resetpassword);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

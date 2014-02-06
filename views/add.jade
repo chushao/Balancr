@@ -1,0 +1,57 @@
+extends layout
+
+block content
+    nav.navbar.navbar-default.navbar-static-top(role="navigation")
+            .container-fluid
+                .navbar-header
+                    button.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbar-collapse-area")
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    .navTitle balancr
+                .collapse.navbar-collapse(id="navbar-collapse-area")
+                    ul.nav.navbar-nav
+                        li
+                            a(href="workplay") work/play
+                        li
+                            a(href="doughnut") doughnut
+                        li
+                            a(href="statistics") statistics
+                        li
+                            a(href="settings") settings
+                        li.active
+                            a(href="add") add activity
+        .page
+            .pageHeading
+                span.heading add activity
+            .pageContent
+            .fields
+                .row
+                    .col-xs-12
+                        form(role="form")
+                            .form-group
+                                label(for='activity').radioOption Activity
+                                input.form-control(type='activity', name='activity', id='activity', placeholder='Running')
+                            .form-group
+                                label(for='category').radioOption Category
+                                select.form-control(type='category', name='category', id='category')
+                                    option Exercise
+                                    option Family
+                                    option Fun
+                                    option Job
+                                    option School
+                            .form-group
+                                .row.Ta-c
+                                    .col-xs-6
+                                        label
+                                            input#work(type='radio', name='workplayRadios', value='work', checked='checked')
+                                            span.radioOption Work
+                                    .col-xs-6
+                                        label
+                                            input#play(type='radio', name='workplayRadios', value='play')
+                                            span.radioOption Play
+                            .form-group
+                                a(href="/workplay")
+                                    .btn.btn-primary.W-100
+                                        span.Fw-b Submit

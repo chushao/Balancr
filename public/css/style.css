@@ -1,8 +1,110 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url('../images/background2.png');
+    background-repeat:no-repeat;
+    display: compact;
 }
 
-a {
-  color: #00B7FF;
+.link {
+    color: #EAA030;
+}
+.link:hover {
+    color: #EAA030;
+    text-decoration: none;
+}
+
+.page {
+    padding: 0 20px 0 20px;
+}
+
+.heading {
+    font-size: 35px;
+    margin-right: 6px;
+    color: #505050;
+    text-shadow: #7B7B7B 0.05em 0.05em 0.05em;
+}
+
+.pageContent {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.loginContent {
+    margin-top: 100px;
+}
+
+.iconLink {
+    margin-left: 10px;
+}
+
+.percent {
+    font-size: 50px;
+}
+.category {
+    font-size: 20px;
+}
+.subheading {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navTitle {
+    font-size: 30px;
+    font-family: Olivier;
+    cursor: default;
+    color: #EAA030;
+    margin-left: 20px;
+    margin-right: 60px;
+    margin-top: 8px;
+    text-shadow: #7B7B7B 0.05em 0.05em 0.05em;
+}
+
+.loginTitle {
+    text-align: center;
+    font-size: 60px;
+    font-family: Olivier;
+    cursor: default;
+    color: #EAA030;
+    text-shadow: #7B7B7B 0.05em 0.05em 0.05em;
+}
+.fields {
+    width: 80%;
+    margin-left: 10%;
+}
+.signIn {
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+#canvas {
+    margin-bottom: 30px;
+}
+
+.radioOption {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+@font-face {
+	font-family: Olivier;
+	src: url(../fonts/olivier_demo.ttf);
+}
+.W-100 {
+    width: 100%;
+}
+.Ta-c {
+    text-align: center;
+}
+.Fw-b {
+    font-weight: bold;
+}
+.Mt-neg-30 {
+    margin-top: -30px;
+}
+.Mb-20 {
+    margin-bottom: 20px;
+}
+.Mb-10 {
+    margin-bottom: 10px;
 }
