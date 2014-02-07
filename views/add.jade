@@ -32,10 +32,19 @@ block content
                         form(role="form")
                             .form-group
                                 label(for='activity').radioOption Activity
-                                input.form-control(type='activity', name='activity', id='activity', placeholder='Running')
+                                input.form-control(type='text', name='activity', id='activity', placeholder='Running')
+                            .form-group
+                                label(for='timeSpent').radioOption Time Spent
+                                .row
+                                    .col-xs-6
+                                        input.form-control(type='number', name='timeSpent', id='timeSpent', placeholder='#')
+                                    .col-xs-6
+                                        select.form-control(type='select', name='timeUnit', id='timeUnit')
+                                            option#minuteOption minutes
+                                            option#hourOption hours
                             .form-group
                                 label(for='category').radioOption Category
-                                select.form-control(type='category', name='category', id='category')
+                                select.form-control(type='select', name='category', id='category')
                                     option Exercise
                                     option Family
                                     option Fun
@@ -55,3 +64,13 @@ block content
                                 a(href="/workplay")
                                     .btn.btn-primary.W-100
                                         span.Fw-b Submit
+    script.
+        $('#timeSpent').on('input', function (e) {
+            if ($('#timeSpent').val() === '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minutes') {
+                $('#minuteOption').html('minute');
+                $('#hourOption').html('hour');
+            } else if ($('#timeSpent').val() !== '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minute') {
+                $('#minuteOption').html('minutes');
+                $('#hourOption').html('hours');
+            }
+        });
