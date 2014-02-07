@@ -3,6 +3,7 @@ body {
     background-image: url('../images/background2.png');
     background-repeat:no-repeat;
     display: compact;
+    padding-bottom: 40px;
 }
 
 .link {
