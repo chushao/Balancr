@@ -28,7 +28,7 @@ block content
             span.subheading
                 a(href="calendar").link Today
         .pageContent
-            canvas#canvas(height="500%", width="500%")
+            canvas#canvas(height="500px", width="500px")
 
 
     script.
@@ -57,3 +57,28 @@ block content
             ];
 
         var myDoughnut = new Chart(document.getElementById("canvas").getContext("2d")).Doughnut(doughnutData);
+
+        var canvas = document.querySelector('canvas');
+        var ctx = canvas.getContext('2d');
+
+        function resize() {
+            // Our canvas must cover full height of screen
+            // regardless of the resolution
+            var width = window.innerWidth - 50;
+            
+            // So we need to calculate the proper scaled width
+            // that should work well with every resolution
+            var ratio = canvas.height/canvas.width;
+            var height = width * ratio;
+
+            if (width > 500 || height > 500) {
+                width = 500;
+                height = 500;
+            }
+            
+            canvas.style.width = width+'px';
+            canvas.style.height = height+'px';
+        }
+
+        window.addEventListener('load', resize, false);
+        window.addEventListener('resize', resize, false);

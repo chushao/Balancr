@@ -3,7 +3,7 @@ body {
     background-image: url('../images/background2.png');
     background-repeat:no-repeat;
     display: compact;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
 }
 
 .link {
@@ -26,12 +26,12 @@ body {
 }
 
 .pageContent {
-    margin-top: 50px;
+    margin-top: 20px;
     text-align: center;
 }
 
 .loginContent {
-    margin-top: 100px;
+    margin-top: 70px;
 }
 
 .iconLink {
@@ -79,7 +79,7 @@ body {
 }
 
 #canvas {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .radioOption {
