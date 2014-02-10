@@ -9,7 +9,50 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
+//facebook authentication
+var authids = require('./auth.js');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
 var app = express();
+
+//serialize and deserialize (for persistent sessions)
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new FacebookStrategy({
+	clientID: authids.facebook.clientID,
+	clientSecret: authids.facebook.clientSecret,
+	callbackURL: authids.facebook.callbackURL
+},
+function(accessToken, refreshToken, profile, done) {
+	process.nextTick(function () {
+		return done(null, profile);
+	});
+}
+));
+
+app.get('/auth/facebook',
+	passport.authenticate('facebook'),
+	function(req, res){
+});
+
+app.get('/auth/facebook/callback',
+passport.authenticate('facebook', { failureRedirect: '/' }),
+function(req, res) {
+	res.redirect('/workplay'); //currently directs to workplay until we have profile screen
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/')
+}
+
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
