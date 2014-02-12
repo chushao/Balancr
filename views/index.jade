@@ -3,11 +3,11 @@ extends layout
 block content
     .loginContent
         .loginTitle 
-            span balancr
+            a(href="/") balancr
     .fields
         .row
             .col-xs-12
-                form(role="form")
+                form(role="form", action="/workplay")
                     .form-group
                         label(for='email').radioOption Email
                         input.form-control(type='email', name='email', id='email', placeholder='Email')
@@ -15,9 +15,8 @@ block content
                         label(for='password').radioOption Password
                         input.form-control(type='password', name='password', id='password', placeholder='Password')
                     .form-group
-                        a(href="/workplay")
-                            .btn.btn-primary.W-100
-                                span.Fw-b Sign In
+                        .form-group
+                            input(type='submit', value="Sign In").btn.btn-primary.W-100
             .col-xs-12.Ta-c
                 span Do't have an account yet? 
                     a(href="/signup").link.Fw-b Sign Up
