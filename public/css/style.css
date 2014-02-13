@@ -132,6 +132,9 @@ body {
     margin-bottom: 40px;
     margin-left: 105%;
 }
+.checkbox span {
+    font-size: 17px;
+}
 
 @font-face {
 	font-family: Olivier;

@@ -5,3 +5,63 @@ block content
         .pageHeading
             span.heading settings
         .pageContent
+        .fields
+                .row
+                    .col-xs-12
+                        form(role="form")
+                            .form-group
+                                label(for='activity').radioOption Categories
+                                .row
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='exercise', checked)
+                                            span Exercise
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='family', checked)
+                                            span Family
+                                .row
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='fun', checked)
+                                            span Fun
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='jobg', checked)
+                                            span Job
+                                .row
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='relaxation')
+                                            span Relaxation
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='school', checked)
+                                            span School
+                            .form-group
+                                label(for='activity').radioOption Goals
+                                .row
+                                    .col-xs-6
+                                        span.radioOption Work %
+                                    .col-xs-6
+                                        span.radioOption Play %
+                                .row
+                                    .col-xs-6
+                                        input.form-control(type='number', min='0', name='work', id='work', value='50')
+                                    .col-xs-6
+                                        input.form-control(type='number', min='0', name='play', id='play', value='50')
+                            .form-group
+                                a(href="/workplay")
+                                    .btn.btn-primary.W-100
+                                        span.Fw-b Submit
+    script.
+        $('#work').on('input', function () {
+            if (parseInt($('#work').val())) {
+                $('#play').val(100 - $('#work').val());
+            }
+        });
+        $('#play').on('input', function () {
+            if (parseInt($('#play').val())) {
+                $('#work').val(100 - $('#play').val());
+            }
+        });
