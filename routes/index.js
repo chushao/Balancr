@@ -36,9 +36,9 @@ exports.add = function(req, res){
 };
 
 exports.calendar = function(req, res){
-  res.render('calendar', { title: 'calendar' });
+  res.render('calendar', { title: 'calendar', origin: '/' + req.query.origin });
 };
 
 exports.details = function(req, res){
-  res.render('details', { title: 'details' });
+  res.render('details', { title: 'details', category: req.query.category });
 };

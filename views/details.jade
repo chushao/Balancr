@@ -4,4 +4,108 @@ block content
     .page
         .pageHeading
             span.heading details
-        .pageContent
+            span.subheading= category
+        .pageContent.activityList
+            //make a loop that has this element for each activity
+            .row.activityItem#activityID
+                .activityInfo
+                    .row.activityName Running around in a circle
+                    .row.activityInfo
+                        .col-xs-2.activityDate 1/29/14
+                        .col-xs-2.activityDuration 1 hr
+                        .col-xs-3.activityCategory Exercise
+                        .col-xs-2.activityWorkPlay Play
+                        .col-xs-3.Ta-end
+                            //instead of the links you can listen to these glyphs for action
+                            a(href="/details?category=" + category).editActivity
+                                span.link.glyphicon.glyphicon-pencil 
+                            a(href="/details?category=" + category).deleteActivity
+                                span.link.glyphicon.glyphicon-trash
+                .activityEditFields.Hidden
+                    .row
+                        .col-xs-12
+                            input.form-control(type='text', name='date', id='activityID*name', value='Running around in a circle').Mb-10
+                        .col-xs-3
+                            input.form-control(type='text', name='date', id='activityID*date', value='1/29/14')
+                        .col-xs-2
+                            input.form-control(type='text', name='duration', id='activityID*duration', value='1 hr')
+                        .col-xs-4
+                            select.form-control(type='select', name='category', id='activityID*category')
+                                option Exercise
+                                option Family
+                                option Fun
+                                option Job
+                                option School
+                        .col-xs-3.Mb-10
+                            select.form-control(type='select', name='category', id='activityID*workplay')
+                                option Play
+                                option Work
+                        .editSubmit
+                            input.form-control(type='submit', value='Edit').btn.btn-primary.edit
+                .activityDeletePane.Hidden
+                    .row.Fw-b.Fz-l Delete this activity?
+                    .row
+                        .btn.btn-default.delete
+                            span Yes
+                        .btn.btn-danger.cancelDelete
+                            span Cancel
+            //dummy activities
+            .row.activityItem#activityID
+                .row.activityName Sitting up
+                .col-xs-2.activityDate 1/29/14
+                .col-xs-2.activityDuration 1 hr
+                .col-xs-3.activityCategory Exercise
+                .col-xs-2.activityWorkPlay Play
+                .col-xs-3.Ta-end
+                    //instead of the links you can listen to these glyphs for action
+                    a(href="/details?category=" + category).editActivity
+                        span.link.glyphicon.glyphicon-pencil 
+                    a(href="/details?category=" + category).deleteActivity
+                        span.link.glyphicon.glyphicon-trash
+            .row.activityItem#activityID
+                .row.activityName Jumping a lot
+                .col-xs-2.activityDate 1/29/14
+                .col-xs-2.activityDuration 1 hr
+                .col-xs-3.activityCategory Exercise
+                .col-xs-2.activityWorkPlay Play
+                .col-xs-3.Ta-end
+                    //instead of the links you can listen to these glyphs for action
+                    a(href="/details?category=" + category).editActivity
+                        span.link.glyphicon.glyphicon-pencil 
+                    a(href="/details?category=" + category).deleteActivity
+                        span.link.glyphicon.glyphicon-trash
+
+    script.
+        $('.editActivity').click(function (e) {
+            e.preventDefault();
+            //figure out what activity you are hiding / unhiding for based on id
+            $('.activityInfo').addClass('Hidden');
+            $('.activityEditFields').removeClass('Hidden');
+        });
+        $('.edit').click(function() {
+            $('.activityInfo').removeClass('Hidden');
+            $('.activityEditFields').addClass('Hidden');
+
+            //do edit stuff after figuring out what activity being looked at
+        });
+
+        $('.deleteActivity').click(function (e) {
+            e.preventDefault();
+            //figure out what activity you are hiding / unhiding for based on id
+            $('.activityInfo').addClass('Hidden');
+            $('.activityDeletePane').removeClass('Hidden');
+        });
+        $('.delete').click(function() {
+            $('.activityInfo').removeClass('Hidden');
+            $('.activityDeletePane').addClass('Hidden');
+
+            //do stuff to delete it here and then going to have to remove the item from the list
+        
+            //using this for now to simulate the activity got removed from html
+            $('#activityID').addClass('Hidden');
+        });
+        $('.cancelDelete').click(function() {
+            $('.activityInfo').removeClass('Hidden');
+            $('.activityDeletePane').addClass('Hidden');
+        });
+

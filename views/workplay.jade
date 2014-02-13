@@ -5,7 +5,7 @@ block content
         .pageHeading
             span.heading work/play
             span.subheading
-                a(href="calendar").link Today
+                a(href="calendar?origin=workplay").link Today
                     span.glyphicon.glyphicon-chevron-right
         .pageContent
             canvas#canvas(height="500px", width="500px")
@@ -14,10 +14,10 @@ block content
                 .col-xs-6.percent 42%
             .row
                 .col-xs-6.category WORK
-                    a(href="details").link
+                    a(href="details?category=work").link
                         span.glyphicon.glyphicon-list.iconLink
                 .col-xs-6.category PLAY
-                    a(href="details").link
+                    a(href="details?category=play").link
                         span.glyphicon.glyphicon-list.iconLink
 
     script.
