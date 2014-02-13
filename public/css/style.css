@@ -45,9 +45,12 @@ body {
     font-size: 20px;
 }
 .subheading {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     text-transform: uppercase;
+}
+.subheading .glyphicon {
+    font-size: 15px;
 }
 
 .navTitle {
@@ -64,10 +67,15 @@ body {
 .loginTitle {
     text-align: center;
     font-size: 60px;
+}
+.loginTitle a {
     font-family: Olivier;
-    cursor: default;
     color: #EAA030;
     text-shadow: #7B7B7B 0.05em 0.05em 0.05em;
+}
+.loginTitle a:hover {
+    text-decoration: none;
+    color: #EAA030;
 }
 .fields {
     width: 80%;
@@ -108,4 +116,7 @@ body {
 }
 .Mb-10 {
     margin-bottom: 10px;
+}
+input[type=submit] {
+    font-weight: bold;
 }

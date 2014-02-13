@@ -12,4 +12,35 @@ html
     meta(name='viewport' content='width=240, user-scalable=yes, initial-scale=0.7, maximum-scale=5.0, minimum-scale=1.0' )
     meta(name="apple-mobile-web-app-cable" content='yes')
   body
+    nav.navbar.navbar-default.navbar-static-top(role="navigation")
+        .container-fluid
+            .navbar-header
+                button.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbar-collapse-area")
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                .navTitle 
+                    a(href="workplay").link balancr
+            .collapse.navbar-collapse(id="navbar-collapse-area")
+                ul.nav.navbar-nav
+                    li#workplay
+                        a(href="workplay") work/play
+                    li#doughnut
+                        a(href="doughnut") doughnut
+                    li#add
+                        a(href="add") add activity
+                    li#statistics
+                        a(href="statistics") statistics
+                    li#settings
+                        a(href="settings") settings
+                    li#signout
+                        a(href="/") sign out
     block content
+
+
+    script.
+        $(function() {
+            var pathname = document.location.pathname.split('/')[1];
+            $('#' + pathname).addClass('active');
+        });
