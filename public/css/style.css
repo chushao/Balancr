@@ -127,6 +127,11 @@ body {
 .delete {
     margin-right: 10px;
 }
+.removeDate {
+    margin-top: -40px;
+    margin-bottom: 40px;
+    margin-left: 105%;
+}
 
 @font-face {
 	font-family: Olivier;
@@ -143,6 +148,9 @@ body {
 }
 .Fw-b {
     font-weight: bold;
+}
+.Mstart-5 {
+    margin-left: 5px;
 }
 .Mt-neg-30 {
     margin-top: -30px;
