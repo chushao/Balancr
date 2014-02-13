@@ -4,7 +4,7 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'login' });
+  res.render('index', { title: 'index' });
 };
 
 exports.signup = function(req, res){
