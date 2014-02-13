@@ -8,6 +8,12 @@
   "dependencies": {
     "express": "3.4.8",
     "jade": "*",
-    "bookshelf": "*"
+    "passport": "*",
+    "passport-local": "*",
+    "passport-facebook": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "connect-flash": "*"
+  
   }
 }
