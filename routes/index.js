@@ -40,5 +40,5 @@ exports.calendar = function(req, res){
 };
 
 exports.details = function(req, res){
-  res.render('details', { title: 'details' });
+  res.render('details', { title: 'details', category: req.query.category });
 };
