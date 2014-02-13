@@ -1,9 +1,9 @@
-extends layoutNoNav
+extends layout
 
 block content
     .loginContent
         .loginTitle 
-            a(href="/") balancr
+            span balancr
     .fields
         .row
             .col-xs-12
@@ -16,6 +16,7 @@ block content
                         input.form-control(type='password', name='password', id='password', placeholder='Password')
                     .form-group
                         input(id='submitBtn', type='submit',value='Log In')
+
             .col-xs-12.Ta-c
                 span Do't have an account yet? 
                     a(href="/signup").link.Fw-b Sign Up
