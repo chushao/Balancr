@@ -111,7 +111,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.bodyParser());
 app.use(express.cookieParser());
-app.use(express.session({ secret: 'fuck this shit' }));
+app.use(express.session({ secret: '08D8AF524EC4850DAE5B66ECD9E57' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
