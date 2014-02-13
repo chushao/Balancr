@@ -19,6 +19,10 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 
+//pw hashing
+var hash = require('./hash');
+
+
 
 function findById(id, fn) {
 	var index = id - 1;
@@ -73,10 +77,16 @@ passport.use(new LocalStrategy( {usernameField: 'email', passwordField: 'passwor
   function (username, password, done) {
     process.nextTick(function () {
       findByEmail(username, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-        if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
-        return done(null, user);
+        if (err) { return done(err); };
+        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); };
+
+        hash(password, user.salt, function (err, hash){
+        	if (err) {return done(err);}
+        	if (hash == user.hash) {
+        		return done( null,user );
+        	}
+        	done(null, false, { message: 'Invalid password' });
+        });
       })
     });
   }
@@ -150,7 +160,8 @@ var Schema = mongoose.Schema
 
 var Goal = new Schema( {
 	name : { type: String }
-  , description : { type: String}
+  , description : { type: String }
+  , Date : Date
 })
 
 var Activity = new Schema( {
@@ -159,14 +170,15 @@ var Activity = new Schema( {
   , TimeSpent : Number
   , Minutes :  Boolean
   , Work : Boolean
+  , Date : Date
 });
 
 var User = new Schema( {
 	id: Number
   , email: { type: String, default: '' }
   , hashed_pass: { type: String, default: ''}
-  , salt: { type: String, default: '' }
-  , authToken: { type: String, default: '' }
+  , salt: { type: String, defualt: ''}
+  , username: { type: String, default: '' }
   , goals: [Goal] //Goal is empty, need to do a .array.push() for goals
   , activities: [Activity] //Array of multiple Activity object
   , categories: [] //Just a list of categories that has been used for activities of this user
@@ -196,7 +208,8 @@ app.get('/details', routes.details);
 app.get('/signup', routes.signup);
 app.get('/resetpassword', routes.resetpassword);
 
-app.get('/login', login.view);
+//Unused for now
+//app.get('/login', login.view);
 
 app.get('/logout', function(req, res){
   req.logout();
@@ -205,7 +218,7 @@ app.get('/logout', function(req, res){
 
 //local submission of email and password
 app.post('/login',
-	passport.authenticate('local', {failureRedirect: '/login'}),
+	passport.authenticate('local', {failureRedirect: '/'}),
 	function (req, res) {
 		res.redirect('/workplay');
 	}
