@@ -100,6 +100,12 @@ function(accessToken, refreshToken, profile, done) {
 
 var app = express();
 
+//Database set up
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
+
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -138,7 +144,35 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/')
 }
 
+//Database schema models
+var Schema = mongoose.Schema
+  , ObjectId = Schema.ObjectId;
 
+var Goal = new Schema( {
+	name : { type: String }
+  , description : { type: String}
+})
+
+var Activity = new Schema( {
+	Activity : { type: String }
+  , Category : { type: String }
+  , TimeSpent : Number
+  , Minutes :  Boolean
+  , Work : Boolean
+});
+
+var User = new Schema( {
+	id: Number
+  , email: { type: String, default: '' }
+  , hashed_pass: { type: String, default: ''}
+  , salt: { type: String, default: '' }
+  , authToken: { type: String, default: '' }
+  , goals: [Goal] //Goal is empty, need to do a .array.push() for goals
+  , activities: [Activity] //Array of multiple Activity object
+  , categories: [] //Just a list of categories that has been used for activities of this user
+});
+
+var User = mongoose.model('User', User);
 
 // development only
 if ('development' == app.get('env')) {
@@ -157,7 +191,7 @@ app.get('/settings', routes.settings);
 app.get('/add', routes.add);
 
 //other items
-app.get('/calendar', routes.calendar);
+app.get('/calendar', ensureAuthenticated, routes.calendar);
 app.get('/details', routes.details);
 app.get('/signup', routes.signup);
 app.get('/resetpassword', routes.resetpassword);
