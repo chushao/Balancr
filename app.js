@@ -11,16 +11,32 @@ var path = require('path');
 var login = require('./routes/login');
 var flash = require('connect-flash');
 var util = require('util');
+var User = require('./models/user');
+//Database set up
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
+
+//Seed the database
+mongoose.Model.seed = function(entities) {  
+    var promise = new mongoose.Promise;
+    this.create(entities, function(err) {
+        if(err) { promise.reject(err); }
+        else    { promise.resolve(); }
+    });
+    return promise;
+};
+
+var User = mongoose.model('User');
+User.remove().exec();
+User.seed(require('./database.json'));
 
 //facebook authentication
 var authids = require('./auth.js');
-var userlist = require('./users.js');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 
-//pw hashing
-var hash = require('./hash');
 
 
 
@@ -67,12 +83,21 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  findById(id, function (err, user) {
-    done(err, user);
+  User.findOne( { id: id }, function (err, user) {
+  	done(err, user);
   });
 });
 
 //local login
+
+passport.use(new LocalStrategy ({
+	usernameField: 'email',
+	passwordField: 'password'
+},
+function(email, password, done) {
+	User.isValidUserPassword(email, password, done);
+}));
+/**
 passport.use(new LocalStrategy( {usernameField: 'email', passwordField: 'password'},
   function (username, password, done) {
     process.nextTick(function () {
@@ -90,7 +115,7 @@ passport.use(new LocalStrategy( {usernameField: 'email', passwordField: 'passwor
       })
     });
   }
-));
+)); ) **/
 
 
 //Facebook login
@@ -110,10 +135,6 @@ function(accessToken, refreshToken, profile, done) {
 
 var app = express();
 
-//Database set up
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
 
 
 // all environments
@@ -154,37 +175,7 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/')
 }
 
-//Database schema models
-var Schema = mongoose.Schema
-  , ObjectId = Schema.ObjectId;
 
-var Goal = new Schema( {
-	name : { type: String }
-  , description : { type: String }
-  , Date : Date
-})
-
-var Activity = new Schema( {
-	activity : { type: String }
-  , category : { type: String }
-  , timeSpent : Number
-  , minutes :  Boolean
-  , work : Boolean
-  , date : { type: String }
-});
-
-var User = new Schema( {
-	id: Number
-  , email: { type: String, default: '' }
-  , salt: { type: String, default: ''}
-  , hash: { type: String, default: ''}
-  , username: { type: String, default: '' }
-  , goals: [Goal] //Goal is empty, need to do a .array.push() for goals
-  , activities: [Activity] //Array of multiple Activity object
-  , categories: [] //Just a list of categories that has been used for activities of this user
-});
-
-var User = mongoose.model('User', User);
 
 // development only
 if ('development' == app.get('env')) {
