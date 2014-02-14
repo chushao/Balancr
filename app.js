@@ -3,21 +3,99 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
-var http = require('http');
-var path = require('path');
-var login = require('./routes/login');
-var flash = require('connect-flash');
-var util = require('util');
-var User = require('./models/user');
+ var express = require('express');
+ var routes = require('./routes');
+ var user = require('./routes/user');
+ var http = require('http');
+ var path = require('path');
+ var login = require('./routes/login');
+ var flash = require('connect-flash');
+ var util = require('util');
+ var User = require('./models/user');
 //Database set up
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
-
+var User = mongoose.model('User');
+User.remove().exec();
 //Seed the database
+
+var chu_data = {
+	"id" : 0,
+	"email" : "c@shao.com",
+	"salt" : "wkSF3tUfzpj5y9PqPVnIgFkxtWmQkRCaIA8blsik6XbYgb0RAeExujSOiF0San7eGjAEJB0iESQf5s8f4kIzkp4GA7UUBQDUDgASKM5NCT9y2dsONE05QSZr1TXHTfjeynfOltUqGXw5OAu2Ko1Rj/Rtd3T1/vUR0WR2lRxrJRU=", 
+	"hash" : "��X$&G��]�g��9��\u0017A�>W��?��V�a#\t�O�{�3 0a�\u0012h�\u0000��|�}��|\u0017��\u001bT0��\u0018��\u0006\u00125_c��aT���&9��\u000e[L.%z�j{�\u0003�8 �J\u00193/.\u000b7�n�\u0011[�\u0013\f\u000b�\u0004͹���NyA1����e�",
+	"username" : "chu",
+	"goals" : {},
+	"activties" : [],
+	"categories" : ["Job", "Exercise", "Fun", "Family"]
+};
+
+var chu = new User(chu_data);
+chu.save( function(error, data) {
+	if(error) {
+		console.log(error);
+	} else {
+		//console.log(data);
+		User.findOne({ username: 'chu' }, function(error, user){
+			if(error){
+				console.log(error);
+			}
+			else if(user == null){
+				console.log('no such user!')
+			}
+			else{
+				user.activities.push({
+					"activity" : "Running around",
+					"category" : "Exercise",
+					"timeSpent" : 43,
+					"minutes" : true,
+					"work" : false,
+					"date" : "2014-01-05"
+				});
+				user.save( function(error, data){
+					if(error){
+						console.log(error);
+					} else{
+						//console.log(data);
+						user.activities.push({
+							"activity" : "Walking",
+							"category" : "Exercise",
+							"timeSpent" : 43,
+							"minutes" : false,
+							"work" : false,
+							"date" : "2014-01-05"
+						});
+						user.save( function(error, data){
+							if(error){
+								console.log(error);
+							} else {
+								//console.log(data);
+								user.activities.push({
+									"activity" : "Coding",
+									"category" : "Job",
+									"timeSpent" : 18,
+									"minutes" : false,
+									"work" : true,
+									"date" : "2014-01-06"
+								});
+								user.save( function(error, data) {
+									if (error) {
+										console.log(error);
+									} else {
+										//console.log(data);
+									}
+								});
+							}
+						});
+					}
+				}); 
+			}
+		});
+}
+});
+
+/**
 mongoose.Model.seed = function(entities) {  
     var promise = new mongoose.Promise;
     this.create(entities, function(err) {
@@ -27,10 +105,9 @@ mongoose.Model.seed = function(entities) {
     return promise;
 };
 
-var User = mongoose.model('User');
-User.remove().exec();
-User.seed(require('./database.json'));
 
+
+User.seed(require('./database.json')); **/
 //facebook authentication
 var authids = require('./auth.js');
 var passport = require('passport');
@@ -79,13 +156,13 @@ function findByEmail(username, fn) {
 
 //serialize and deserialize (for persistent sessions)
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+	done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findOne( { id: id }, function (err, user) {
-  	done(err, user);
-  });
+	User.findOne( { id: id }, function (err, user) {
+		done(err, user);
+	});
 });
 
 //local login
@@ -115,7 +192,7 @@ passport.use(new LocalStrategy( {usernameField: 'email', passwordField: 'passwor
       })
     });
   }
-)); ) **/
+  )); ) **/
 
 
 //Facebook login
@@ -159,7 +236,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/auth/facebook',
 	passport.authenticate('facebook'),
 	function(req, res){
-});
+	});
 
 //doesn't currently work
 app.get('/auth/facebook/callback',
@@ -171,15 +248,15 @@ app.get('/auth/facebook/callback',
 
 //dunno if this works
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/')
+	if (req.isAuthenticated()) { return next(); }
+	res.redirect('/')
 }
 
 
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
 
@@ -187,15 +264,54 @@ if ('development' == app.get('env')) {
 
 //nav items
 app.get('/', routes.index);
-app.get('/workplay', routes.workplay);
-app.get('/doughnut', routes.doughnut);
-app.get('/statistics', routes.statistics);
-app.get('/settings', routes.settings);
-app.get('/add', routes.add);
+app.get('/workplay', function(req, res){
+	User.findOne({username: req.user.username}, 'activities', function(error, data){
+		console.log(data.activities.length);
+		console.log(data.activities);
+		console.log(data.activities[0].timeSpent);
+		var work = 0;
+		var play = 0;
+		//weirdass way of looping loops
+		function calculate(i) { 
+			if( i < data.activities.length ) {
+				if (data.activities[i].minutes) {
+					if (data.activities[i].work) {
+						work = work + data.activities[i].timeSpent;
+					} else {
+						play = play + data.activities[i].timeSpent;
+					}
+				} else {
+					if (data.activities[i].work) {
+						work = work + (data.activities[i].timeSpent * 60);
+					} else {
+						play = play + (data.activities[i].timeSpent * 60);
+					}
+				}
+				calculate(i+1);
+			}
+		}
+		calculate(0);
+		//console.log("Initial minutes")
+		//console.log(work);
+		//console.log(play);
+		workPercent = (work / (work + play)) * 100;
+		playPercent = (play / (work + play)) * 100; 
+		//console.log("Percentage")
+		//console.log(workPercent);
+		//console.log(playPercent);
+		res.render('workplay', {pageData: {workPercent: workPercent, playPercent: playPercent }});
+	});
+
+	
+});
+app.get('/doughnut', ensureAuthenticated, routes.doughnut);
+app.get('/statistics', ensureAuthenticated, routes.statistics);
+app.get('/settings', ensureAuthenticated, routes.settings);
+app.get('/add', ensureAuthenticated, routes.add);
 
 //other items
 app.get('/calendar', ensureAuthenticated, routes.calendar);
-app.get('/details', routes.details);
+app.get('/details', ensureAuthenticated, routes.details);
 app.get('/signup', routes.signup);
 app.get('/resetpassword', routes.resetpassword);
 
@@ -203,8 +319,8 @@ app.get('/resetpassword', routes.resetpassword);
 //app.get('/login', login.view);
 
 app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
+	req.logout();
+	res.redirect('/');
 });
 
 //local submission of email and password
@@ -213,9 +329,9 @@ app.post('/login',
 	function (req, res) {
 		res.redirect('/workplay');
 	}
-);
+	);
 
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });
