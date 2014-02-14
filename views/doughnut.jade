@@ -9,6 +9,48 @@ block content
                     span.glyphicon.glyphicon-chevron-right
         .pageContent
             canvas#canvas(height="500px", width="500px")
+            table.table.table-condensed.table-striped#doughnutTable
+                tr
+                    td
+                        .color(style='background-color: #F7464A;')
+                    td.percent 10%
+                    td.category Exercise
+                    td.category.Ta-start
+                        a(href="details?category=exercise").link
+                            span.glyphicon.glyphicon-list.iconLink
+                tr
+                    td
+                        .color(style='background-color: #46BFBD;')
+                    td.percent 21%
+                    td.category Fun
+                    td.category.Ta-start
+                        a(href="details?category=fun").link
+                            span.glyphicon.glyphicon-list.iconLink
+                tr
+                    td
+                        .color(style='background-color: #FDB45C;')
+                    td.percent 32%
+                    td.category Family
+                    td.category.Ta-start
+                        a(href="details?category=family").link
+                            span.glyphicon.glyphicon-list.iconLink
+                tr
+                    td
+                        .color(style='background-color: #949FB1;')
+                    td.percent 12%
+                    td.category Job
+                    td.category.Ta-start
+                        a(href="details?category=job").link
+                            span.glyphicon.glyphicon-list.iconLink
+                tr
+                    td
+                        .color(style='background-color: #4D5360;')
+                    td.percent 34%
+                    td.category School
+                    td.category.Ta-start
+                        a(href="details?category=family").link
+                            span.glyphicon.glyphicon-list.iconLink
+
 
 
     script.
