@@ -148,6 +148,15 @@ body {
     -moz-border-radius: 15px;
     border-radius: 15px;
 }
+.statistics {
+    width: 90%;
+    margin-left: 5%;
+    font-size: 18px;
+}
+
+.stat {
+    margin-bottom: 50px;
+}
 
 @font-face {
 	font-family: Olivier;
