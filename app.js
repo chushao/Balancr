@@ -328,13 +328,16 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 				} else {
 					y = false;
 				}
+				date = new Date();
+				var month = date.getMonth() + 1; //Off by 1 error for getMonth
+				var fullDate = date.getFullYear().toString() + '-' + month.toString() + '-' + date.getDate().toString();
 				user.activities.push({
 					"activity" : req.body.activity,
 					"category" : req.body.category,
 					"timeSpent" : req.body.timeSpent,
 					"minutes" : x,
 					"work" : y,
-					"date" : "2014-01-05"
+					"date" : fullDate
 				});
 				user.save( function(error, data){
 					if(error){
@@ -345,8 +348,6 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 				});
 			}
 		});
-
-	
 	res.redirect('/workplay');
 })
 
