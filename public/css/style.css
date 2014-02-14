@@ -39,7 +39,7 @@ body {
 }
 
 .percent {
-    font-size: 50px;
+    font-size: 45px;
 }
 .category {
     font-size: 20px;
@@ -132,6 +132,31 @@ body {
     margin-bottom: 40px;
     margin-left: 105%;
 }
+.checkbox span {
+    font-size: 17px;
+}
+#doughnutTable td {
+    vertical-align: middle;
+}
+#doughnutTable {
+    width: 90%;
+    margin-left: 5%;
+}
+.color {
+    width: 30px;
+    height: 30px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+.statistics {
+    width: 90%;
+    margin-left: 5%;
+    font-size: 18px;
+}
+
+.stat {
+    margin-bottom: 50px;
+}
 
 @font-face {
 	font-family: Olivier;
@@ -142,6 +167,9 @@ body {
 }
 .Ta-c {
     text-align: center;
+}
+.Ta-start {
+    text-align: left;
 }
 .Ta-end {
     text-align: right;

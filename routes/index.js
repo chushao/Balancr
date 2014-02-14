@@ -1,4 +1,7 @@
 
+var User = require('../models/user');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 /*
  * GET home page.
  */
@@ -16,6 +19,7 @@ exports.resetpassword = function(req, res){
 };
 
 exports.workplay = function(req, res){
+  console.log(User);
   res.render('workplay', { title: 'work/play' });
 };
 

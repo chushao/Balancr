@@ -10,8 +10,8 @@ block content
         .pageContent
             canvas#canvas(height="500px", width="500px")
             .row
-                .col-xs-6.percent 58%
-                .col-xs-6.percent 42%
+                .col-xs-6.percent #{pageData.workPercent}%
+                .col-xs-6.percent #{pageData.playPercent}%
             .row
                 .col-xs-6.category WORK
                     a(href="details?category=work").link
@@ -23,11 +23,11 @@ block content
     script.
         var pieData = [
                     {
-                        value: 42,
+                        value: #{pageData.playPercent},
                         color:"#F38630"
                     },
                     {
-                        value : 58,
+                        value : #{pageData.workPercent},
                         color : "#69D2E7"
                     }
                 
