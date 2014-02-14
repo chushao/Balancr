@@ -294,8 +294,8 @@ app.get('/workplay', function(req, res){
 		//console.log("Initial minutes")
 		//console.log(work);
 		//console.log(play);
-		workPercent = (work / (work + play)) * 100;
-		playPercent = (play / (work + play)) * 100; 
+		workPercent = Math.round( ((work / (work + play)) * 100) * 100) / 100;
+		playPercent = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
 		//console.log("Percentage")
 		//console.log(workPercent);
 		//console.log(playPercent);
