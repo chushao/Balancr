@@ -165,19 +165,19 @@ var Goal = new Schema( {
 })
 
 var Activity = new Schema( {
-	Activity : { type: String }
-  , Category : { type: String }
-  , TimeSpent : Number
-  , Minutes :  Boolean
-  , Work : Boolean
-  , Date : Date
+	activity : { type: String }
+  , category : { type: String }
+  , timeSpent : Number
+  , minutes :  Boolean
+  , work : Boolean
+  , date : { type: String }
 });
 
 var User = new Schema( {
 	id: Number
   , email: { type: String, default: '' }
-  , hashed_pass: { type: String, default: ''}
-  , salt: { type: String, defualt: ''}
+  , salt: { type: String, default: ''}
+  , hash: { type: String, default: ''}
   , username: { type: String, default: '' }
   , goals: [Goal] //Goal is empty, need to do a .array.push() for goals
   , activities: [Activity] //Array of multiple Activity object
