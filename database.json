@@ -32,7 +32,10 @@
 		}
 
 	],
-	"categories" : ["Job", "Exercise", "Fun", "Family"]
+	"categories" : [ "Work", "Exercise",
+					 "Entertainment", "School",
+					 "Social", "Errands",
+					  "Family", "Other"]
 
 
 }

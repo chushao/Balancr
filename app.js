@@ -12,6 +12,7 @@ var login = require('./routes/login');
 var flash = require('connect-flash');
 var util = require('util');
 var User = require('./models/user');
+var salter = require('./hash.js');
 //Database set up
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
@@ -30,6 +31,7 @@ mongoose.Model.seed = function(entities) {
 var User = mongoose.model('User');
 User.remove().exec();
 User.seed(require('./database.json'));
+var defCategories = require('./categories.json');
 
 //facebook authentication
 var authids = require('./auth.js');
@@ -37,7 +39,29 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 
+function createNewUser(u_username, u_email, u_password) {
+	salter(u_password, function (err,u_hash, u_salt) {
+		if(!err) {
+			var newId = Math.floor((Math.random()*1000)+1);
+			var newUser = new User({id: newId, username: u_username, email: u_email, salt: u_salt,
+								hash: u_hash, categories: defCategories.categories});
+			console.log(newUser);
+			var conn = mongoose.connection;
+			newUser.save(function (err, newUser, num) {
+				if(!err) {
+					console.log(num);
+					console.log('success?');
+				}
+				else {
 
+				}
+			})
+		}
+		else {
+			//not sure actually
+		}
+	});
+}
 
 
 function findById(id, fn) {
@@ -214,6 +238,17 @@ app.post('/login',
 		res.redirect('/workplay');
 	}
 );
+
+app.post('/signup', function (req, res) {
+	if(req.body.password === req.body.confirmPassword) {
+		createNewUser(req.body.username, req.body.email, req.body.password);
+		res.redirect('/workplay');	
+	}
+	else {
+		console.log('passwords do not match');
+		res.redirect('/signup');
+	}
+});
 
 
 http.createServer(app).listen(app.get('port'), function(){
