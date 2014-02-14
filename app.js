@@ -264,11 +264,11 @@ if ('development' == app.get('env')) {
 
 //nav items
 app.get('/', routes.index);
-app.get('/workplay', function(req, res){
+app.get('/workplay', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, 'activities', function(error, data){
-		console.log(data.activities.length);
-		console.log(data.activities);
-		console.log(data.activities[0].timeSpent);
+		//console.log(data.activities.length);
+		//console.log(data.activities);
+		//console.log(data.activities[0].timeSpent);
 		var work = 0;
 		var play = 0;
 		//weirdass way of looping loops
@@ -308,6 +308,47 @@ app.get('/doughnut', ensureAuthenticated, routes.doughnut);
 app.get('/statistics', ensureAuthenticated, routes.statistics);
 app.get('/settings', ensureAuthenticated, routes.settings);
 app.get('/add', ensureAuthenticated, routes.add);
+app.post('/add', ensureAuthenticated, function(req, res) {
+	User.findOne({username: req.user.username}, function(error, user){
+		if(error){
+				console.log(error);
+			}
+			else if(user == null){
+				console.log('no such user!')
+			} else{
+				var x = true;
+				if (req.body.timeUnit == "minutes") {
+				 	x = true;
+				} else {
+					x = false;
+				}
+				var y = true;
+				if (req.body.workplayRadios == 'work') {
+					y = true;
+				} else {
+					y = false;
+				}
+				user.activities.push({
+					"activity" : req.body.activity,
+					"category" : req.body.category,
+					"timeSpent" : req.body.timeSpent,
+					"minutes" : x,
+					"work" : y,
+					"date" : "2014-01-05"
+				});
+				user.save( function(error, data){
+					if(error){
+						console.log(error);
+					} else{
+						console.log(data);
+					}
+				});
+			}
+		});
+
+	
+	res.redirect('/workplay');
+})
 
 //other items
 app.get('/calendar', ensureAuthenticated, routes.calendar);
