@@ -9,13 +9,13 @@ block content
             //make a loop that has this element for each activity
             .row.activityItem#activityID
                 .activityInfo
-                    .row.activityName Running around in a circle
+                    .row.activityName Running around a lot
                     .row.activityInfo
-                        .col-xs-2.activityDate 1/29/14
-                        .col-xs-2.activityDuration 1 hr
+                        .col-xs-3.Mb-10.activityDate 1/29/14
+                        .col-xs-3.activityDuration 1 hr
                         .col-xs-3.activityCategory Exercise
                         .col-xs-2.activityWorkPlay Play
-                        .col-xs-3.Ta-end
+                        .col-xs-4.col-xs-offset-8.Ta-end
                             //instead of the links you can listen to these glyphs for action
                             a(href="/details?category=" + category).editActivity
                                 span.link.glyphicon.glyphicon-pencil 
@@ -27,9 +27,9 @@ block content
                             input.form-control(type='text', name='date', id='activityID*name', value='Running around in a circle').Mb-10
                         .col-xs-3
                             input.form-control(type='text', name='date', id='activityID*date', value='1/29/14')
-                        .col-xs-2
+                        .col-xs-3
                             input.form-control(type='text', name='duration', id='activityID*duration', value='1 hr')
-                        .col-xs-4
+                        .col-xs-3
                             select.form-control(type='select', name='category', id='activityID*category')
                                 option Exercise
                                 option Family
