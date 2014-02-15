@@ -17,6 +17,7 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
 var User = mongoose.model('User');
+// TODO remove later as this resets the database everytime. 
 User.remove().exec();
 //Seed the database
 
@@ -94,20 +95,6 @@ chu.save( function(error, data) {
 		});
 }
 });
-
-/**
-mongoose.Model.seed = function(entities) {  
-    var promise = new mongoose.Promise;
-    this.create(entities, function(err) {
-        if(err) { promise.reject(err); }
-        else    { promise.resolve(); }
-    });
-    return promise;
-};
-
-
-
-User.seed(require('./database.json')); **/
 //facebook authentication
 var authids = require('./auth.js');
 var passport = require('passport');
@@ -174,26 +161,6 @@ passport.use(new LocalStrategy ({
 function(email, password, done) {
 	User.isValidUserPassword(email, password, done);
 }));
-/**
-passport.use(new LocalStrategy( {usernameField: 'email', passwordField: 'password'},
-  function (username, password, done) {
-    process.nextTick(function () {
-      findByEmail(username, function (err, user) {
-        if (err) { return done(err); };
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); };
-
-        hash(password, user.salt, function (err, hash){
-        	if (err) {return done(err);}
-        	if (hash == user.hash) {
-        		return done( null,user );
-        	}
-        	done(null, false, { message: 'Invalid password' });
-        });
-      })
-    });
-  }
-  )); ) **/
-
 
 //Facebook login
 passport.use(new FacebookStrategy({
@@ -266,9 +233,6 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/workplay', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, 'activities', function(error, data){
-		//console.log(data.activities.length);
-		//console.log(data.activities);
-		//console.log(data.activities[0].timeSpent);
 		var work = 0;
 		var play = 0;
 		//weirdass way of looping loops
@@ -291,14 +255,8 @@ app.get('/workplay', ensureAuthenticated, function(req, res){
 			}
 		}
 		calculate(0);
-		//console.log("Initial minutes")
-		//console.log(work);
-		//console.log(play);
 		workPercent = Math.round( ((work / (work + play)) * 100) * 100) / 100;
 		playPercent = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
-		//console.log("Percentage")
-		//console.log(workPercent);
-		//console.log(playPercent);
 		res.render('workplay', {pageData: {workPercent: workPercent, playPercent: playPercent }});
 	});
 
@@ -316,18 +274,11 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 			else if(user == null){
 				console.log('no such user!')
 			} else{
-				var x = true;
-				if (req.body.timeUnit == "minutes") {
-				 	x = true;
-				} else {
-					x = false;
-				}
-				var y = true;
-				if (req.body.workplayRadios == 'work') {
-					y = true;
-				} else {
-					y = false;
-				}
+				//Data converter
+				var timeUnit = true;
+				req.body.timeUnit == "minutes" ? timeUnit = true : timeUnit = false;
+				var workUnit = true;
+				req.body.workplayRadios == 'work' ? workUnit = true : workUnit = false;
 				date = new Date();
 				var month = date.getMonth() + 1; //Off by 1 error for getMonth
 				var fullDate = date.getFullYear().toString() + '-' + month.toString() + '-' + date.getDate().toString();
@@ -335,8 +286,8 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 					"activity" : req.body.activity,
 					"category" : req.body.category,
 					"timeSpent" : req.body.timeSpent,
-					"minutes" : x,
-					"work" : y,
+					"minutes" : timeUnit,
+					"work" : workUnit,
 					"date" : fullDate
 				});
 				user.save( function(error, data){
