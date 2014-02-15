@@ -4,34 +4,96 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
-var http = require('http');
-var path = require('path');
-var login = require('./routes/login');
-var flash = require('connect-flash');
-var util = require('util');
-var User = require('./models/user');
-var salter = require('./hash.js');
+ var routes = require('./routes');
+ var user = require('./routes/user');
+ var http = require('http');
+ var path = require('path');
+ var login = require('./routes/login');
+ var flash = require('connect-flash');
+ var util = require('util');
+ var User = require('./models/user');
 //Database set up
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
-
-//Seed the database
-mongoose.Model.seed = function(entities) {  
-    var promise = new mongoose.Promise;
-    this.create(entities, function(err) {
-        if(err) { promise.reject(err); }
-        else    { promise.resolve(); }
-    });
-    return promise;
-};
-
 var User = mongoose.model('User');
 User.remove().exec();
-User.seed(require('./database.json'));
-var defCategories = require('./categories.json');
+//Seed the database
+
+var chu_data = {
+	"id" : 0,
+	"email" : "c@shao.com",
+	"salt" : "wkSF3tUfzpj5y9PqPVnIgFkxtWmQkRCaIA8blsik6XbYgb0RAeExujSOiF0San7eGjAEJB0iESQf5s8f4kIzkp4GA7UUBQDUDgASKM5NCT9y2dsONE05QSZr1TXHTfjeynfOltUqGXw5OAu2Ko1Rj/Rtd3T1/vUR0WR2lRxrJRU=", 
+	"hash" : "��X$&G��]�g��9��\u0017A�>W��?��V�a#\t�O�{�3 0a�\u0012h�\u0000��|�}��|\u0017��\u001bT0��\u0018��\u0006\u00125_c��aT���&9��\u000e[L.%z�j{�\u0003�8 �J\u00193/.\u000b7�n�\u0011[�\u0013\f\u000b�\u0004͹���NyA1����e�",
+	"username" : "chu",
+	"goals" : {},
+	"activties" : [],
+	"categories" : ["Job", "Exercise", "Fun", "Family"]
+};
+
+var chu = new User(chu_data);
+chu.save( function(error, data) {
+	if(error) {
+		console.log(error);
+	} else {
+		//console.log(data);
+		User.findOne({ username: 'chu' }, function(error, user){
+			if(error){
+				console.log(error);
+			}
+			else if(user == null){
+				console.log('no such user!')
+			}
+			else{
+				user.activities.push({
+					"activity" : "Running around",
+					"category" : "Exercise",
+					"timeSpent" : 43,
+					"minutes" : true,
+					"work" : false,
+					"date" : "2014-01-05"
+				});
+				user.save( function(error, data){
+					if(error){
+						console.log(error);
+					} else{
+						//console.log(data);
+						user.activities.push({
+							"activity" : "Walking",
+							"category" : "Exercise",
+							"timeSpent" : 43,
+							"minutes" : false,
+							"work" : false,
+							"date" : "2014-01-05"
+						});
+						user.save( function(error, data){
+							if(error){
+								console.log(error);
+							} else {
+								//console.log(data);
+								user.activities.push({
+									"activity" : "Coding",
+									"category" : "Job",
+									"timeSpent" : 18,
+									"minutes" : false,
+									"work" : true,
+									"date" : "2014-01-06"
+								});
+								user.save( function(error, data) {
+									if (error) {
+										console.log(error);
+									} else {
+										//console.log(data);
+									}
+								});
+							}
+						});
+					}
+				}); 
+			}
+		});
+}
+});
 
 //facebook authentication
 var authids = require('./auth.js');
@@ -103,13 +165,13 @@ function findByEmail(username, fn) {
 
 //serialize and deserialize (for persistent sessions)
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+	done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findOne( { id: id }, function (err, user) {
-  	done(err, user);
-  });
+	User.findOne( { id: id }, function (err, user) {
+		done(err, user);
+	});
 });
 
 //local login
@@ -121,26 +183,6 @@ passport.use(new LocalStrategy ({
 function(email, password, done) {
 	User.isValidUserPassword(email, password, done);
 }));
-/**
-passport.use(new LocalStrategy( {usernameField: 'email', passwordField: 'password'},
-  function (username, password, done) {
-    process.nextTick(function () {
-      findByEmail(username, function (err, user) {
-        if (err) { return done(err); };
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); };
-
-        hash(password, user.salt, function (err, hash){
-        	if (err) {return done(err);}
-        	if (hash == user.hash) {
-        		return done( null,user );
-        	}
-        	done(null, false, { message: 'Invalid password' });
-        });
-      })
-    });
-  }
-)); ) **/
-
 
 //Facebook login
 passport.use(new FacebookStrategy({
@@ -183,7 +225,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/auth/facebook',
 	passport.authenticate('facebook'),
 	function(req, res){
-});
+	});
 
 //doesn't currently work
 app.get('/auth/facebook/callback',
@@ -195,15 +237,15 @@ app.get('/auth/facebook/callback',
 
 //dunno if this works
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/')
+	if (req.isAuthenticated()) { return next(); }
+	res.redirect('/')
 }
 
 
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
 
@@ -211,15 +253,87 @@ if ('development' == app.get('env')) {
 
 //nav items
 app.get('/', routes.index);
-app.get('/workplay', routes.workplay);
-app.get('/doughnut', routes.doughnut);
-app.get('/statistics', routes.statistics);
-app.get('/settings', routes.settings);
-app.get('/add', routes.add);
+app.get('/workplay', ensureAuthenticated, function(req, res){
+	User.findOne({username: req.user.username}, 'activities', function(error, data){
+		var work = 0;
+		var play = 0;
+		//weirdass way of looping loops
+		function calculate(i) { 
+			if( i < data.activities.length ) {
+				if (data.activities[i].minutes) {
+					if (data.activities[i].work) {
+						work = work + data.activities[i].timeSpent;
+					} else {
+						play = play + data.activities[i].timeSpent;
+					}
+				} else {
+					if (data.activities[i].work) {
+						work = work + (data.activities[i].timeSpent * 60);
+					} else {
+						play = play + (data.activities[i].timeSpent * 60);
+					}
+				}
+				calculate(i+1);
+			}
+		}
+		calculate(0);
+		workPercent = Math.round( ((work / (work + play)) * 100) * 100) / 100;
+		playPercent = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
+		res.render('workplay', {pageData: {workPercent: workPercent, playPercent: playPercent }});
+	});
+
+	
+});
+app.get('/doughnut', ensureAuthenticated, routes.doughnut);
+app.get('/statistics', ensureAuthenticated, routes.statistics);
+app.get('/settings', ensureAuthenticated, routes.settings);
+app.get('/add', ensureAuthenticated, routes.add);
+app.post('/add', ensureAuthenticated, function(req, res) {
+	User.findOne({username: req.user.username}, function(error, user){
+		if(error){
+				console.log(error);
+			}
+			else if(user == null){
+				console.log('no such user!')
+			} else{
+				var x = true;
+				if (req.body.timeUnit == "minutes") {
+				 	x = true;
+				} else {
+					x = false;
+				}
+				var y = true;
+				if (req.body.workplayRadios == 'work') {
+					y = true;
+				} else {
+					y = false;
+				}
+				date = new Date();
+				var month = date.getMonth() + 1; //Off by 1 error for getMonth
+				var fullDate = date.getFullYear().toString() + '-' + month.toString() + '-' + date.getDate().toString();
+				user.activities.push({
+					"activity" : req.body.activity,
+					"category" : req.body.category,
+					"timeSpent" : req.body.timeSpent,
+					"minutes" : x,
+					"work" : y,
+					"date" : fullDate
+				});
+				user.save( function(error, data){
+					if(error){
+						console.log(error);
+					} else{
+						console.log(data);
+					}
+				});
+			}
+		});
+	res.redirect('/workplay');
+})
 
 //other items
 app.get('/calendar', ensureAuthenticated, routes.calendar);
-app.get('/details', routes.details);
+app.get('/details', ensureAuthenticated, routes.details);
 app.get('/signup', routes.signup);
 app.get('/resetpassword', routes.resetpassword);
 
@@ -227,8 +341,8 @@ app.get('/resetpassword', routes.resetpassword);
 //app.get('/login', login.view);
 
 app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
+	req.logout();
+	res.redirect('/');
 });
 
 //local submission of email and password
@@ -237,7 +351,7 @@ app.post('/login',
 	function (req, res) {
 		res.redirect('/workplay');
 	}
-);
+	);
 
 app.post('/signup', function (req, res) {
 	if(req.body.password === req.body.confirmPassword) {
@@ -252,5 +366,5 @@ app.post('/signup', function (req, res) {
 
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });
