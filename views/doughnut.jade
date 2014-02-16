@@ -13,67 +13,104 @@ block content
                 tr
                     td
                         .color(style='background-color: #F7464A;')
-                    td.percent 10%
+                    td.percent #{pageData.exercisePercent}%
                     td.category Exercise
                     td.category.Ta-start
-                        a(href="details?category=exercise").link
+                        a(href="details/exercise").link
                             span.glyphicon.glyphicon-list.iconLink
                 tr
                     td
                         .color(style='background-color: #46BFBD;')
-                    td.percent 21%
-                    td.category Fun
+                    td.percent #{pageData.workPercent}%
+                    td.category Work
                     td.category.Ta-start
-                        a(href="details?category=fun").link
+                        a(href="details/work").link
                             span.glyphicon.glyphicon-list.iconLink
                 tr
                     td
                         .color(style='background-color: #FDB45C;')
-                    td.percent 32%
-                    td.category Family
+                    td.percent #{pageData.entertainmentPercent}%
+                    td.category Entertainment
                     td.category.Ta-start
-                        a(href="details?category=family").link
+                        a(href="details/entertainment").link
                             span.glyphicon.glyphicon-list.iconLink
                 tr
                     td
                         .color(style='background-color: #949FB1;')
-                    td.percent 12%
-                    td.category Job
+                    td.percent #{pageData.schoolPercent}%
+                    td.category School
                     td.category.Ta-start
-                        a(href="details?category=job").link
+                        a(href="details/school").link
+                            span.glyphicon.glyphicon-list.iconLink
+                tr
+                    td
+                        .color(style='background-color: #6495ED;')
+                    td.percent #{pageData.socialPercent}%
+                    td.category Social
+                    td.category.Ta-start
+                        a(href="details/social").link
                             span.glyphicon.glyphicon-list.iconLink
                 tr
                     td
                         .color(style='background-color: #4D5360;')
-                    td.percent 34%
-                    td.category School
+                    td.percent #{pageData.errandsPercent}%
+                    td.category Errands
                     td.category.Ta-start
-                        a(href="details?category=school").link
-                            span.glyphicon.glyphicon-list.iconLink
+                        a(href="details/errands").link
+                            span.glyphicon.glyphicon-list.iconLink        
+                tr
+                    td
+                        .color(style='background-color: #7CCD7C;')
+                    td.percent #{pageData.familyPercent}%
+                    td.category Family
+                    td.category.Ta-start
+                        a(href="details/family").link
+                            span.glyphicon.glyphicon-list.iconLink        
+                tr
+                    td
+                        .color(style='background-color: #7171C6;')
+                    td.percent #{pageData.otherPercent}%
+                    td.category Other
+                    td.category.Ta-start
+                        a(href="details/other").link
+                            span.glyphicon.glyphicon-list.iconLink        
+
 
 
 
     script.
         var doughnutData = [
                 {
-                    value: 30,
+                    value: #{pageData.exerciseGraph},
                     color:"#F7464A"
                 },
                 {
-                    value : 50,
+                    value : #{pageData.workGraph},
                     color : "#46BFBD"
                 },
                 {
-                    value : 100,
+                    value : #{pageData.entertainmentGraph},
                     color : "#FDB45C"
                 },
                 {
-                    value : 40,
+                    value : #{pageData.schoolGraph},
                     color : "#949FB1"
                 },
                 {
-                    value : 120,
+                    value : #{pageData.socialGraph},
+                    color : "#6495ED"
+                },
+                {
+                    value : #{pageData.errandsGraph},
                     color : "#4D5360"
+                },
+                {
+                    value : #{pageData.familyGraph},
+                    color : "#7CCD7C"
+                },
+                {
+                    value : #{pageData.otherGraph},
+                    color : "#7171C6"
                 }
             
             ];
