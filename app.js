@@ -231,28 +231,35 @@ if ('development' == app.get('env')) {
 
 //nav items
 app.get('/', routes.index);
-app.get('/workplay', ensureAuthenticated, function(req, res){
-	User.findOne({username: req.user.username}, 'activities', function(error, data){
+app.get('/workplay/:year/:month/:day', ensureAuthenticated, function(req,res) {
+		//Convert year/month/day from path to databasecall
+		var queryDate = req.params.year+'-'+req.params.month+'-'+req.params.day;
+	User.findOne({username: req.user.username}, 'activities', function(error, data){	
 		var work = 0;
 		var play = 0;
 		//weirdass way of looping loops
 		function calculate(i) { 
 			if( i < data.activities.length ) {
-				if (data.activities[i].minutes) {
-					if (data.activities[i].work) {
-						work = work + data.activities[i].timeSpent;
+				var date = new Date(data.activities[i].date);
+				var qDate = new Date(queryDate);
+				if ((date.getYear() == qDate.getYear()) && (date.getDate() == qDate.getDate()) && (date.getMonth() == qDate.getMonth())) {
+					if (data.activities[i].minutes) {
+						if (data.activities[i].work) {
+							work = work + data.activities[i].timeSpent;
+						} else {
+							play = play + data.activities[i].timeSpent;
+						}
 					} else {
-						play = play + data.activities[i].timeSpent;
-					}
-				} else {
-					if (data.activities[i].work) {
-						work = work + (data.activities[i].timeSpent * 60);
-					} else {
-						play = play + (data.activities[i].timeSpent * 60);
+						if (data.activities[i].work) {
+							work = work + (data.activities[i].timeSpent * 60);
+						} else {
+							play = play + (data.activities[i].timeSpent * 60);
+						}
 					}
 				}
 				calculate(i+1);
 			}
+				
 		}
 		calculate(0);
 		workPercent = Math.round( ((work / (work + play)) * 100) * 100) / 100;
@@ -261,7 +268,46 @@ app.get('/workplay', ensureAuthenticated, function(req, res){
 		var playGraph = isNaN(playPercent) ? 50 : playPercent;
 		if (isNaN(workPercent)) { workPercent = 0;}
 		if (isNaN(playPercent)) { playPercent = 0;}
-		res.render('workplay', {pageData: {workGraph: workGraph, playGraph: playGraph, workPercent: workPercent, playPercent: playPercent }});
+		res.render('workplay', {pageData: {wpDate: queryDate, workGraph: workGraph, playGraph: playGraph, workPercent: workPercent, playPercent: playPercent }});
+	
+	});
+});
+app.get('/workplay', ensureAuthenticated, function(req, res){
+	User.findOne({username: req.user.username}, 'activities', function(error, data){
+		var work = 0;
+		var play = 0;
+		//weirdass way of looping loops
+		function calculate(i) { 
+			if( i < data.activities.length ) {
+				var date = new Date(data.activities[i].date);
+				var today = new Date();
+				if ((date.getYear() == today.getYear()) && (date.getDate() == today.getDate()) && (date.getMonth() == today.getMonth())) {
+					if (data.activities[i].minutes) {
+						if (data.activities[i].work) {
+							work = work + data.activities[i].timeSpent;
+						} else {
+							play = play + data.activities[i].timeSpent;
+						}
+					} else {
+						if (data.activities[i].work) {
+							work = work + (data.activities[i].timeSpent * 60);
+						} else {
+							play = play + (data.activities[i].timeSpent * 60);
+						}
+					}
+				}
+				calculate(i+1);
+			}
+				
+		}
+		calculate(0);
+		workPercent = Math.round( ((work / (work + play)) * 100) * 100) / 100;
+		playPercent = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
+		var workGraph = isNaN(workPercent) ? 50 : workPercent;
+		var playGraph = isNaN(playPercent) ? 50 : playPercent;
+		if (isNaN(workPercent)) { workPercent = 0;}
+		if (isNaN(playPercent)) { playPercent = 0;}
+		res.render('workplay', {pageData: {wpDate: 'today', workGraph: workGraph, playGraph: playGraph, workPercent: workPercent, playPercent: playPercent }});
 	});
 
 	
