@@ -31,6 +31,28 @@ var User = new Schema( {
   , categories: [] //Just a list of categories that has been used for activities of this user
 });
 
+User.statics.signup = function(email, password, done){
+	var User = this;
+	hash(password, function(err, salt, hash){
+		if(err) throw err;
+		// if (err) return done(err);
+		User.create({
+			id: Math.floor((Math.random()*1000)+1),
+			email : email,
+			salt : salt,
+			hash : hash,
+			username: email,
+			categories : [ 	"Work", "Exercise",
+ 					 		"Entertainment", "School",
+ 					 		"Social", "Errands",
+ 					  		"Family", "Other" ]
+		}, function(err, user){
+			if(err) throw err;
+			// if (err) return done(err);
+			done(null, user);
+		});
+	});
+}
 
 User.statics.isValidUserPassword = function(email, password, done) {
 	this.findOne({email : email}, function(err, user){

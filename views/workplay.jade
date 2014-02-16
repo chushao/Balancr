@@ -5,7 +5,7 @@ block content
         .pageHeading
             span.heading work/play
             span.subheading
-                a(href="calendar?origin=workplay").link Today
+                a(href="calendar?origin=workplay").link #{pageData.wpDate}
                     span.glyphicon.glyphicon-chevron-right
         .pageContent
             canvas#canvas(height="500px", width="500px")
@@ -23,11 +23,11 @@ block content
     script.
         var pieData = [
                     {
-                        value: #{pageData.playPercent},
+                        value: #{pageData.playGraph},
                         color:"#F38630"
                     },
                     {
-                        value : #{pageData.workPercent},
+                        value : #{pageData.workGraph},
                         color : "#69D2E7"
                     }
                 
