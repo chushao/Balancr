@@ -7,7 +7,7 @@ block content
         .fields
             .row
                 .col-xs-12
-                    form(role="form", action="/signup")
+                    form(role="form", method="POST", action="/signup")
                         .form-group
                             label(for='email').radioOption Email
                             input.form-control(type='email', name='email', id='email', placeholder='Email')
