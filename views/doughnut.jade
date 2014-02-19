@@ -3,7 +3,7 @@ extends layout
 block content
     .page
         .pageHeading
-            span.heading doughnut
+            span.heading categories
             span.subheading
                 a(href="calendar").link Today
                     span.glyphicon.glyphicon-chevron-right
@@ -14,42 +14,45 @@ block content
                     td
                         .color(style='background-color: #F7464A;')
                     td.percent 10%
-                    td.category Exercise
+                    td.category.Ta-start Exercise
                     td.category.Ta-start
                         a(href="details?category=exercise").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #46BFBD;')
                     td.percent 21%
-                    td.category Fun
+                    td.category.Ta-start Fun
                     td.category.Ta-start
                         a(href="details?category=fun").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #FDB45C;')
                     td.percent 32%
-                    td.category Family
+                    td.category.Ta-start Family
                     td.category.Ta-start
                         a(href="details?category=family").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #949FB1;')
                     td.percent 12%
-                    td.category Job
+                    td.category.Ta-start Job
                     td.category.Ta-start
                         a(href="details?category=job").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #4D5360;')
                     td.percent 34%
-                    td.category School
+                    td.category.Ta-start School
                     td.category.Ta-start
                         a(href="details?category=school").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
+            .stat.Fz-xs.Ta-start
+                span.glyphicon.glyphicon-info-sign.Mend-4
+                span This doughnut graph shows the balance between all of your activities based on your category labels.
 
 
 

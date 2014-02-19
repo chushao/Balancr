@@ -39,10 +39,10 @@ body {
 }
 
 .percent {
-    font-size: 45px;
+    font-size: 35px;
 }
 .category {
-    font-size: 20px;
+    font-size: 18px;
 }
 .subheading {
     font-size: 18px;
@@ -113,12 +113,10 @@ body {
     margin-left: 80%;
 }
 .activityName {
-    text-align: left;
-    padding-left: 30px;
-    font-size: 25px;
+    font-size: 20px;
 }
 .editActivity {
-    margin-right: 8px;
+    margin-right: 15px;
     font-size: 18px;
 }
 .deleteActivity {
@@ -143,8 +141,9 @@ body {
     margin-left: 5%;
 }
 .color {
-    width: 30px;
-    height: 30px;
+    margin-left: 10%;
+    width: 25px;
+    height: 25px;
     -moz-border-radius: 15px;
     border-radius: 15px;
 }
@@ -152,10 +151,16 @@ body {
     width: 90%;
     margin-left: 5%;
     font-size: 18px;
+    text-align: left;
 }
 
 .stat {
-    margin-bottom: 50px;
+    font-size: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, .7);
+    margin-bottom: 20px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
 @font-face {
@@ -189,8 +194,23 @@ body {
 .Mb-10 {
     margin-bottom: 10px;
 }
+.Mstart-neg-5 {
+    margin-left: -5px;
+}
+.Mend-4 {
+    margin-right: 4px;
+}
+.P-2 {
+    padding: 2px;
+}
 .Hidden {
     display: none;
+}
+.Fz-s {
+    font-size: 13px;
+}
+.Fz-xs {
+    font-size: 11px;
 }
 .Fz-l {
     font-size: 20px;
