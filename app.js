@@ -209,7 +209,7 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback',
 	passport.authenticate('facebook', { failureRedirect: '/' }),
 	function (req, res) {
-		res.redirect('/workplay'); //currently directs to workplay until we have profile screen
+		res.redirect('/workplay'); 
 	});
 
 
