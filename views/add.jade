@@ -17,13 +17,21 @@ block content
                                 input.form-control(type='date', name='date', id='date')
                             .form-group
                                 label(for='timeSpent').radioOption Time Spent
-                                .row
+                                .row.Mb-10
                                     .col-xs-6
                                         input.form-control(type='number', min='1', name='timeSpent', id='timeSpent', placeholder='#')
                                     .col-xs-6
                                         select.form-control(type='select', name='timeUnit', id='timeUnit')
                                             option#minuteOption minutes
                                             option#hourOption hours
+                                .row#startTimer
+                                    .col-xs-6.col-xs-offset-6
+                                        btn.btn.btn-default.W-100
+                                            span.Fw-b Start Timer
+                                 .row#endTimer.Hidden
+                                    .col-xs-6.col-xs-offset-6
+                                        btn.btn.btn-danger.W-100
+                                            span.Fw-b Stop Timer
                             .form-group
                                 label(for='category').radioOption Category
                                 select.form-control(type='select', name='category', id='category')
@@ -56,4 +64,18 @@ block content
                     $('#minuteOption').html('minutes');
                     $('#hourOption').html('hours');
                 }
+            });
+
+            $('#startTimer').on('click', function(e) {
+                $('#startTimer').addClass('Hidden');
+                $('#endTimer').removeClass('Hidden');
+                $('#timeSpent').attr('disabled','disabled');
+                $('#timeUnit').attr('disabled','disabled');
+            });
+
+            $('#endTimer').on('click', function(e) {
+                $('#endTimer').addClass('Hidden');
+                $('#startTimer').removeClass('Hidden');
+                $('#timeSpent').removeAttr('disabled');
+                $('#timeUnit').removeAttr('disabled');
             });
