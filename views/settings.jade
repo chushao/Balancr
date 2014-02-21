@@ -38,6 +38,15 @@ block content
                                         .checkbox
                                             input(type='checkbox', id='family', name="family")
                                             span Family
+                                .row
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='social', name="social")
+                                            span Social
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='other', name="other")
+                                            span Other
                             .form-group
                                 label(for='activity').radioOption Goals
                                 .row
@@ -81,5 +90,11 @@ block content
             }
             if (#{pageData.family}) {
                 $('#family').attr('checked', true);
+            }
+            if (#{pageData.social}) {
+                $('#social').attr('checked', true);
+            }
+            if (#{pageData.other}) {
+                $('#other').attr('checked', true);
             }
         });

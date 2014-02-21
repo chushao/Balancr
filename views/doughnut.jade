@@ -10,106 +10,123 @@ block content
         .pageContent
             canvas#canvas(height="500px", width="500px")
             table.table.table-condensed.table-striped#doughnutTable
-                tr
-                    td
-                        .color(style='background-color: #F7464A;')
-                    td.percent #{pageData.exercisePercent}%
-                    td.category.Ta-start Exercise
-                    td.category.Ta-start
-                        a(href="details/category/exercise").link
-                            span.glyphicon.glyphicon-list
-                tr
-                    td
-                        .color(style='background-color: #46BFBD;')
-                    td.percent #{pageData.workPercent}%
-                    td.category.Ta-start Work
-                    td.category.Ta-start
-                        a(href="details/category/work").link
-                            span.glyphicon.glyphicon-list
-                tr
-                    td
-                        .color(style='background-color: #FDB45C;')
-                    td.percent #{pageData.entertainmentPercent}%
-                    td.category.Ta-start Entertainment
-                    td.category.Ta-start
-                        a(href="details/category/entertainment").link
-                            span.glyphicon.glyphicon-list
-                tr
-                    td
-                        .color(style='background-color: #949FB1;')
-                    td.percent #{pageData.schoolPercent}%
-                    td.category.Ta-start School
-                    td.category.Ta-start
-                        a(href="details/category/school").link
-                            span.glyphicon.glyphicon-list
-                tr
-                    td
-                        .color(style='background-color: #6495ED;')
-                    td.percent #{pageData.socialPercent}%
-                    td.category.Ta-start Social
-                    td.category.Ta-start
-                        a(href="details/category/social").link
-                            span.glyphicon.glyphicon-list
-                tr
-                    td
-                        .color(style='background-color: #4D5360;')
-                    td.percent #{pageData.errandsPercent}%
-                    td.category.Ta-start Errands
-                    td.category.Ta-start
-                        a(href="details/category/errands").link
-                            span.glyphicon.glyphicon-list    
-                tr
-                    td
-                        .color(style='background-color: #7CCD7C;')
-                    td.percent #{pageData.familyPercent}%
-                    td.category.Ta-start Family
-                    td.category.Ta-start
-                        a(href="details/category/family").link
-                            span.glyphicon.glyphicon-list       
-                tr
-                    td
-                        .color(style='background-color: #7171C6;')
-                    td.percent #{pageData.otherPercent}%
-                    td.category.Ta-start Other
-                    td.category.Ta-start
-                        a(href="details/category/other").link
-                            span.glyphicon.glyphicon-list
+                if pageData.exerciseOn
+                    tr
+                        td
+                            .color(style='background-color: #F7464A;')
+                        td.percent #{pageData.exercisePercent}%
+                        td.category.Ta-start Exercise
+                        td.category.Ta-start
+                            a(href="details/category/exercise").link
+                                span.glyphicon.glyphicon-list
+                if pageData.workOn
+                    tr
+                        td
+                            .color(style='background-color: #46BFBD;')
+                        td.percent #{pageData.workPercent}%
+                        td.category.Ta-start Work
+                        td.category.Ta-start
+                            a(href="details/category/work").link
+                                span.glyphicon.glyphicon-list
+                if pageData.entertainmentOn
+                    tr
+                        td
+                            .color(style='background-color: #FDB45C;')
+                        td.percent #{pageData.entertainmentPercent}%
+                        td.category.Ta-start Entertainment
+                        td.category.Ta-start
+                            a(href="details/category/entertainment").link
+                                span.glyphicon.glyphicon-list
+                if pageData.schoolOn
+                    tr
+                        td
+                            .color(style='background-color: #949FB1;')
+                        td.percent #{pageData.schoolPercent}%
+                        td.category.Ta-start School
+                        td.category.Ta-start
+                            a(href="details/category/school").link
+                                span.glyphicon.glyphicon-list
+                if pageData.socialOn
+                    tr
+                        td
+                            .color(style='background-color: #6495ED;')
+                        td.percent #{pageData.socialPercent}%
+                        td.category.Ta-start Social
+                        td.category.Ta-start
+                            a(href="details/category/social").link
+                                span.glyphicon.glyphicon-list
+                if pageData.errandsOn
+                    tr
+                        td
+                            .color(style='background-color: #4D5360;')
+                        td.percent #{pageData.errandsPercent}%
+                        td.category.Ta-start Errands
+                        td.category.Ta-start
+                            a(href="details/category/errands").link
+                                span.glyphicon.glyphicon-list    
+                if pageData.familyOn
+                    tr
+                        td
+                            .color(style='background-color: #7CCD7C;')
+                        td.percent #{pageData.familyPercent}%
+                        td.category.Ta-start Family
+                        td.category.Ta-start
+                            a(href="details/category/family").link
+                                span.glyphicon.glyphicon-list       
+                if pageData.otherOn
+                    tr
+                        td
+                            .color(style='background-color: #7171C6;')
+                        td.percent #{pageData.otherPercent}%
+                        td.category.Ta-start Other
+                        td.category.Ta-start
+                            a(href="details/category/other").link
+                                span.glyphicon.glyphicon-list
             .stat.Fz-xs.Ta-start
                 span.glyphicon.glyphicon-info-sign.Mend-4
                 span This doughnut graph shows the balance between all of your activities based on your category labels.
 
     script.
+        var exerciseGraph = #{pageData.exerciseOn} ? #{pageData.exerciseGraph} : 0;
+        var workGraph = #{pageData.workOn} ? #{pageData.workGraph} : 0;
+        var entertainmentGraph = #{pageData.entertainmentOn} ? #{pageData.entertainmentGraph} : 0;
+        var schoolGraph = #{pageData.schoolOn} ? #{pageData.schoolGraph} : 0;
+        var socialGraph = #{pageData.socialOn} ? #{pageData.socialGraph} : 0;
+        var errandsGraph = #{pageData.errandsOn} ? #{pageData.errandsGraph} : 0;
+        var familyGraph = #{pageData.familyOn} ? #{pageData.familyGraph} : 0;
+        var otherGraph = #{pageData.otherOn} ? #{pageData.otherGraph} : 0;
+
         var doughnutData = [
                 {
-                    value: #{pageData.exerciseGraph},
+                    value: exerciseGraph,
                     color:"#F7464A"
                 },
                 {
-                    value : #{pageData.workGraph},
+                    value : workGraph,
                     color : "#46BFBD"
                 },
                 {
-                    value : #{pageData.entertainmentGraph},
+                    value : entertainmentGraph,
                     color : "#FDB45C"
                 },
                 {
-                    value : #{pageData.schoolGraph},
+                    value : schoolGraph,
                     color : "#949FB1"
                 },
                 {
-                    value : #{pageData.socialGraph},
+                    value : socialGraph,
                     color : "#6495ED"
                 },
                 {
-                    value : #{pageData.errandsGraph},
+                    value : errandsGraph,
                     color : "#4D5360"
                 },
                 {
-                    value : #{pageData.familyGraph},
+                    value : familyGraph,
                     color : "#7CCD7C"
                 },
                 {
-                    value : #{pageData.otherGraph},
+                    value : otherGraph,
                     color : "#7171C6"
                 }
             

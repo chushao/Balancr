@@ -19,82 +19,7 @@ mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
 var User = mongoose.model('User');
 //This line will drop the database
 //User.remove().exec();
-//Seed the database
-/**
-var chu_data = {
-	"id" : 0,
-	"email" : "c@shao.com",
-	"salt" : "wkSF3tUfzpj5y9PqPVnIgFkxtWmQkRCaIA8blsik6XbYgb0RAeExujSOiF0San7eGjAEJB0iESQf5s8f4kIzkp4GA7UUBQDUDgASKM5NCT9y2dsONE05QSZr1TXHTfjeynfOltUqGXw5OAu2Ko1Rj/Rtd3T1/vUR0WR2lRxrJRU=", 
-	"hash" : "��X$&G��]�g��9��\u0017A�>W��?��V�a#\t�O�{�3 0a�\u0012h�\u0000��|�}��|\u0017��\u001bT0��\u0018��\u0006\u00125_c��aT���&9��\u000e[L.%z�j{�\u0003�8 �J\u00193/.\u000b7�n�\u0011[�\u0013\f\u000b�\u0004͹���NyA1����e�",
-	"username" : "chu",
-	"goals" : {},
-	"activties" : [],
-	"categories" : ["Job", "Exercise", "Fun", "Family"]
-};
 
-var chu = new User(chu_data);
-chu.save( function(error, data) {
-	if(error) {
-		console.log(error);
-	} else {
-		//console.log(data);
-		User.findOne({ username: 'chu' }, function(error, user){
-			if(error){
-				console.log(error);
-			}
-			else if(user == null){
-				console.log('no such user!')
-			}
-			else{
-				user.activities.push({
-					"activity" : "Running around",
-					"category" : "Exercise",
-					"timeSpent" : 43,
-					"minutes" : true,
-					"work" : false,
-					"date" : "2014-01-05"
-				});
-				user.save( function(error, data){
-					if(error){
-						console.log(error);
-					} else{
-						//console.log(data);
-						user.activities.push({
-							"activity" : "Walking",
-							"category" : "Exercise",
-							"timeSpent" : 43,
-							"minutes" : false,
-							"work" : false,
-							"date" : "2014-01-05"
-						});
-						user.save( function(error, data){
-							if(error){
-								console.log(error);
-							} else {
-								//console.log(data);
-								user.activities.push({
-									"activity" : "Coding",
-									"category" : "Job",
-									"timeSpent" : 18,
-									"minutes" : false,
-									"work" : true,
-									"date" : "2014-01-06"
-								});
-								user.save( function(error, data) {
-									if (error) {
-										console.log(error);
-									} else {
-										//console.log(data);
-									}
-								});
-							}
-						});
-					}
-				}); 
-			}
-		});
-}
-}); **/
 //facebook authentication
 var authids = require('./auth.js');
 var passport = require('passport');
@@ -187,6 +112,7 @@ function(accessToken, refreshToken, profile, done) {
 					work: true,
 					exercise: true,
 					entertainment: true,
+					social: true,
 					school: true,
 					errands: true,
 					family: true,
@@ -432,7 +358,7 @@ app.get('/workplay', ensureAuthenticated, function(req, res){
 });
 
 app.get('/doughnut', ensureAuthenticated, function(req, res){
-	User.findOne({username: req.user.username}, 'activities', function(error, data){
+	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
 		var entertainment = 0;
@@ -486,17 +412,27 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
 		if (isNaN(schoolPercent)) { schoolPercent = 0; }
 		if (isNaN(errandsPercent)) { errandsPercent = 0; }
-		if (isNaN(familyPercent)) { familyPercent = 9; }
+		if (isNaN(familyPercent)) { familyPercent = 0; }
 		if (isNaN(otherPercent)) { otherPercent = 0; }
 
-		var workPercent = Math.round( ((work / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var exercisePercent = Math.round( ((exercise / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var entertainmentPercent = Math.round( ((entertainment / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var schoolPercent = Math.round( ((school / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var socialPercent = Math.round( ((social / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var errandsPercent = Math.round( ((errands / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var familyPercent = Math.round( ((family / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var otherPercent = Math.round( ((other / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
+		total = 0;
+		if (data.work) { total += work; }
+		if (data.exercise) { total += exercise; }
+		if (data.entertainment) { total += entertainment; } 
+		if (data.school) { total += school; }
+		if (data.social) { total += social; }
+		if (data.errands) { total += errands; }
+		if (data.family) { total += family; }
+		if (data.other) { total += other; }
+	
+		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
+		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
+		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
+		var schoolPercent = Math.round( ((school / total) * 100) * 100) / 100;
+		var socialPercent = Math.round( ((social / total) * 100) * 100) / 100;
+		var errandsPercent = Math.round( ((errands / total) * 100) * 100) / 100;
+		var familyPercent = Math.round( ((family / total) * 100) * 100) / 100;
+		var otherPercent = Math.round( ((other / total) * 100) * 100) / 100;
 		var workGraph = isNaN(work) ? 0 : work;
 		var exerciseGraph = isNaN(exercise) ? 0 : exercise;
 		var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
@@ -506,9 +442,10 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 		var familyGraph = isNaN(family) ? 0 : family;
 		var otherGraph = isNaN(other) ? 0 : other;
 
+
 		//mothereffing edge case
-		if (isNaN(workPercent) && isNaN(exercisePercent) && 
-			isNaN(entertainmentPercent) && isNaN(schoolPercent) && isNaN(socialPercent) &&isNaN(errandsPercent) && isNaN(familyPercent) && isNaN(otherPercent)) {
+		if ( (workPercent == 0) && (exercisePercent == 0) && 
+			(entertainmentPercent == 0) && (schoolPercent == 0) && (socialPercent == 0) && (errandsPercent == 0) && (familyPercent == 0) && (otherPercent == 0)) {
 			workGraph = 12.5;
 		workPercent = 0;
 		exerciseGraph = 12.5;
@@ -544,7 +481,15 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 		socialGraph: socialGraph,
 		errandsGraph: errandsGraph,
 		familyGraph: familyGraph,
-		otherGraph: otherGraph }
+		otherGraph: otherGraph,
+		workOn: data.work,
+		exerciseOn: data.exercise,
+		entertainmentOn: data.entertainment,
+		schoolOn: data.school,
+		socialOn: data.social,
+		errandsOn: data.errands,
+		familyOn: data.family,
+		otherOn: data.other  }
 	});
 });
 });
@@ -598,29 +543,41 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 			if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
 			if (isNaN(schoolPercent)) { schoolPercent = 0; }
 			if (isNaN(errandsPercent)) { errandsPercent = 0; }
-			if (isNaN(familyPercent)) { familyPercent = 9; }
+			if (isNaN(familyPercent)) { familyPercent = 0; }
 			if (isNaN(otherPercent)) { otherPercent = 0; }
 
-			var workPercent = Math.round( ((work / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var exercisePercent = Math.round( ((exercise / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var entertainmentPercent = Math.round( ((entertainment / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var schoolPercent = Math.round( ((school / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var socialPercent = Math.round( ((social / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var errandsPercent = Math.round( ((errands / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var familyPercent = Math.round( ((family / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var otherPercent = Math.round( ((other / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-			var workGraph = isNaN(work) ? 0 : work;
-			var exerciseGraph = isNaN(exercise) ? 0 : exercise;
-			var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
-			var schoolGraph = isNaN(school) ? 0 : school;
-			var socialGraph = isNaN(social) ? 0 : social;
-			var errandsGraph = isNaN(errands) ? 0 : errands;
-			var familyGraph = isNaN(family) ? 0 : family;
-			var otherGraph = isNaN(other) ? 0 : other;
+			
+		total = 0;
+		if (data.work) { total += work; }
+		if (data.exercise) { total += exercise; }
+		if (data.entertainment) { total += entertainment; } 
+		if (data.school) { total += school; }
+		if (data.social) { total += social; }
+		if (data.errands) { total += errands; }
+		if (data.family) { total += family; }
+		if (data.other) { total += other; }
+	
+		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
+		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
+		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
+		var schoolPercent = Math.round( ((school / total) * 100) * 100) / 100;
+		var socialPercent = Math.round( ((social / total) * 100) * 100) / 100;
+		var errandsPercent = Math.round( ((errands / total) * 100) * 100) / 100;
+		var familyPercent = Math.round( ((family / total) * 100) * 100) / 100;
+		var otherPercent = Math.round( ((other / total) * 100) * 100) / 100;
+		var workGraph = isNaN(work) ? 0 : work;
+		var exerciseGraph = isNaN(exercise) ? 0 : exercise;
+		var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
+		var schoolGraph = isNaN(school) ? 0 : school;
+		var socialGraph = isNaN(social) ? 0 : social;
+		var errandsGraph = isNaN(errands) ? 0 : errands;
+		var familyGraph = isNaN(family) ? 0 : family;
+		var otherGraph = isNaN(other) ? 0 : other;
+
 
 		//mothereffing edge case
-		if (isNaN(workPercent) && isNaN(exercisePercent) && 
-			isNaN(entertainmentPercent) && isNaN(schoolPercent) && isNaN(socialPercent) &&isNaN(errandsPercent) && isNaN(familyPercent) && isNaN(otherPercent)) {
+		if ( (workPercent == 0) && (exercisePercent == 0) && 
+			(entertainmentPercent == 0) && (schoolPercent == 0) && (socialPercent == 0) && (errandsPercent == 0) && (familyPercent == 0) && (otherPercent == 0)) {
 			workGraph = 12.5;
 		workPercent = 0;
 		exerciseGraph = 12.5;
@@ -656,7 +613,15 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 		socialGraph: socialGraph,
 		errandsGraph: errandsGraph,
 		familyGraph: familyGraph,
-		otherGraph: otherGraph }
+		otherGraph: otherGraph,
+		workOn: data.work,
+		exerciseOn: data.exercise,
+		entertainmentOn: data.entertainment,
+		schoolOn: data.school,
+		socialOn: data.social,
+		errandsOn: data.errands,
+		familyOn: data.family,
+		otherOn: data.other  }
 	});
 });
 });
@@ -722,14 +687,25 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		if (isNaN(familyPercent)) { familyPercent = 9; }
 		if (isNaN(otherPercent)) { otherPercent = 0; }
 
-		var workPercent = Math.round( ((work / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var exercisePercent = Math.round( ((exercise / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var entertainmentPercent = Math.round( ((entertainment / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var schoolPercent = Math.round( ((school / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var socialPercent = Math.round( ((social / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var errandsPercent = Math.round( ((errands / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var familyPercent = Math.round( ((family / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var otherPercent = Math.round( ((other / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
+
+		total = 0;
+		if (data.work) { total += work; }
+		if (data.exercise) { total += exercise; }
+		if (data.entertainment) { total += entertainment; } 
+		if (data.school) { total += school; }
+		if (data.social) { total += social; }
+		if (data.errands) { total += errands; }
+		if (data.family) { total += family; }
+		if (data.other) { total += other; }
+	
+		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
+		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
+		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
+		var schoolPercent = Math.round( ((school / total) * 100) * 100) / 100;
+		var socialPercent = Math.round( ((social / total) * 100) * 100) / 100;
+		var errandsPercent = Math.round( ((errands / total) * 100) * 100) / 100;
+		var familyPercent = Math.round( ((family / total) * 100) * 100) / 100;
+		var otherPercent = Math.round( ((other / total) * 100) * 100) / 100;
 		var workGraph = isNaN(work) ? 0 : work;
 		var exerciseGraph = isNaN(exercise) ? 0 : exercise;
 		var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
@@ -739,9 +715,10 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		var familyGraph = isNaN(family) ? 0 : family;
 		var otherGraph = isNaN(other) ? 0 : other;
 
+
 		//mothereffing edge case
-		if (isNaN(workPercent) && isNaN(exercisePercent) && 
-			isNaN(entertainmentPercent) && isNaN(schoolPercent) && isNaN(socialPercent) &&isNaN(errandsPercent) && isNaN(familyPercent) && isNaN(otherPercent)) {
+		if ( (workPercent == 0) && (exercisePercent == 0) && 
+			(entertainmentPercent == 0) && (schoolPercent == 0) && (socialPercent == 0) && (errandsPercent == 0) && (familyPercent == 0) && (otherPercent == 0)) {
 			workGraph = 12.5;
 		workPercent = 0;
 		exerciseGraph = 12.5;
@@ -777,7 +754,15 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		socialGraph: socialGraph,
 		errandsGraph: errandsGraph,
 		familyGraph: familyGraph,
-		otherGraph: otherGraph }
+		otherGraph: otherGraph,
+		workOn: data.work,
+		exerciseOn: data.exercise,
+		entertainmentOn: data.entertainment,
+		schoolOn: data.school,
+		socialOn: data.social,
+		errandsOn: data.errands,
+		familyOn: data.family,
+		otherOn: data.other  }
 	});
 });
 });
@@ -847,14 +832,25 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		if (isNaN(familyPercent)) { familyPercent = 9; }
 		if (isNaN(otherPercent)) { otherPercent = 0; }
 
-		var workPercent = Math.round( ((work / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var exercisePercent = Math.round( ((exercise / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var entertainmentPercent = Math.round( ((entertainment / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var schoolPercent = Math.round( ((school / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var socialPercent = Math.round( ((social / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var errandsPercent = Math.round( ((errands / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var familyPercent = Math.round( ((family / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
-		var otherPercent = Math.round( ((other / (work + exercise + entertainment + school + social + errands + family + other)) * 100) * 100) / 100;
+		
+		total = 0;
+		if (data.work) { total += work; }
+		if (data.exercise) { total += exercise; }
+		if (data.entertainment) { total += entertainment; } 
+		if (data.school) { total += school; }
+		if (data.social) { total += social; }
+		if (data.errands) { total += errands; }
+		if (data.family) { total += family; }
+		if (data.other) { total += other; }
+	
+		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
+		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
+		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
+		var schoolPercent = Math.round( ((school / total) * 100) * 100) / 100;
+		var socialPercent = Math.round( ((social / total) * 100) * 100) / 100;
+		var errandsPercent = Math.round( ((errands / total) * 100) * 100) / 100;
+		var familyPercent = Math.round( ((family / total) * 100) * 100) / 100;
+		var otherPercent = Math.round( ((other / total) * 100) * 100) / 100;
 		var workGraph = isNaN(work) ? 0 : work;
 		var exerciseGraph = isNaN(exercise) ? 0 : exercise;
 		var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
@@ -864,9 +860,10 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		var familyGraph = isNaN(family) ? 0 : family;
 		var otherGraph = isNaN(other) ? 0 : other;
 
+
 		//mothereffing edge case
-		if (isNaN(workPercent) && isNaN(exercisePercent) && 
-			isNaN(entertainmentPercent) && isNaN(schoolPercent) && isNaN(socialPercent) &&isNaN(errandsPercent) && isNaN(familyPercent) && isNaN(otherPercent)) {
+		if ( (workPercent == 0) && (exercisePercent == 0) && 
+			(entertainmentPercent == 0) && (schoolPercent == 0) && (socialPercent == 0) && (errandsPercent == 0) && (familyPercent == 0) && (otherPercent == 0)) {
 			workGraph = 12.5;
 		workPercent = 0;
 		exerciseGraph = 12.5;
@@ -902,31 +899,42 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		socialGraph: socialGraph,
 		errandsGraph: errandsGraph,
 		familyGraph: familyGraph,
-		otherGraph: otherGraph }
+		otherGraph: otherGraph,
+		workOn: data.work,
+		exerciseOn: data.exercise,
+		entertainmentOn: data.entertainment,
+		schoolOn: data.school,
+		errandsOn: data.errands,
+		familyOn: data.family,
+		otherOn: data.other }
 	});
 });
 });
 app.get('/statistics', ensureAuthenticated, routes.statistics);
 app.get('/settings', ensureAuthenticated, function(req, res) {
 	User.findOne({username: req.user.username}, function(error, user){
-			var work = user.work;
-			var exercise = user.exercise;
-			var entertainment = user.entertainment;
-			var school = user.school;
-			var errands = user.errands;
-			var family = user.family;
-			var workGoal = user.goal;
-			var playGoal = 100 - user.goal;
-		 res.render('settings', { pageData: { 
-		 	work: work,
-		 	exercise: exercise,
-		 	entertainment: entertainment,
-		 	school: school,
-		 	errands: errands,
-		 	family: family,
-		 	workGoal: workGoal,
-		 	playGoal: playGoal
-		 }});
+		var work = user.work;
+		var exercise = user.exercise;
+		var entertainment = user.entertainment;
+		var school = user.school;
+		var errands = user.errands;
+		var family = user.family;
+		var social = user.social;
+		var other = user.other;
+		var workGoal = user.goal;
+		var playGoal = 100 - user.goal;
+		res.render('settings', { pageData: { 
+			work: work,
+			exercise: exercise,
+			entertainment: entertainment,
+			school: school,
+			errands: errands,
+			family: family,
+			social: social,
+			other: other,
+			workGoal: workGoal,
+			playGoal: playGoal
+		}});
 	});
 });
 
@@ -940,6 +948,8 @@ app.post('/settings', ensureAuthenticated, function(req, res) {
 		user.school = req.body.school == 'on' ? true : false;
 		user.errands = req.body.errands == 'on' ? true : false;
 		user.family = req.body.family == 'on' ? true : false;
+		user.social = req.body.family == 'on' ? true : false;
+		user.other = req.body.family == 'on' ? true : false;
 		user.goal = req.body.workGoal;
 
 		user.save(function(err) {

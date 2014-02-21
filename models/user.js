@@ -28,6 +28,7 @@ var User = new Schema( {
   , school: Boolean
   , errands: Boolean
   , family: Boolean
+  , social: Boolean
   , other: Boolean //Even though boolean, currently will always be true
 });
 
@@ -46,6 +47,7 @@ User.statics.signup = function(email, password, done){
 			work: true,
 			exercise: true,
 			entertainment: true,
+			social: true,
 			school: true,
 			errands: true,
 			family: true,
