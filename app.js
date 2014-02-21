@@ -1238,7 +1238,7 @@ app.post('/edit', ensureAuthenticated, function(req, res) {
 			if (err) {
 				console.log(err);
 			} else {
-				var timeStr = req.body.timeSpent.split(" ");
+				var timeStr = req.body.duration.split(" ");
 				var minutes = (timeStr[1].indexOf("minute") !== -1) ? false : true;
 				var work = (req.body.workplay == 'Work') ? true : false;
 
