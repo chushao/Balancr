@@ -17,7 +17,7 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/balancr');
 var User = mongoose.model('User');
-// TODO remove later as this resets the database everytime. 
+//This line will drop the database
 //User.remove().exec();
 //Seed the database
 /**
@@ -183,10 +183,14 @@ function(accessToken, refreshToken, profile, done) {
 					email: profile.username,
 					id: profile.id,
 					username: profile.username,
-					categories : [ 	"Work", "Exercise",
-				 		"Entertainment", "School",
-				 		"Social", "Errands",
-				  	"Family", "Other" ]
+					goal: 50,
+					work: true,
+					exercise: true,
+					entertainment: true,
+					school: true,
+					errands: true,
+					family: true,
+					other: true
 				});
 				newUser.save(); 
 				return done(null, newUser);
@@ -903,7 +907,52 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 });
 });
 app.get('/statistics', ensureAuthenticated, routes.statistics);
-app.get('/settings', ensureAuthenticated, routes.settings);
+app.get('/settings', ensureAuthenticated, function(req, res) {
+	User.findOne({username: req.user.username}, function(error, user){
+			var work = user.work;
+			var exercise = user.exercise;
+			var entertainment = user.entertainment;
+			var school = user.school;
+			var errands = user.errands;
+			var family = user.family;
+			var workGoal = user.goal;
+			var playGoal = 100 - user.goal;
+		 res.render('settings', { pageData: { 
+		 	work: work,
+		 	exercise: exercise,
+		 	entertainment: entertainment,
+		 	school: school,
+		 	errands: errands,
+		 	family: family,
+		 	workGoal: workGoal,
+		 	playGoal: playGoal
+		 }});
+	});
+});
+
+app.post('/settings', ensureAuthenticated, function(req, res) {
+	// Couldn't figure out how to use upsert, gonna use two DB calls because IDGAF
+	User.findOne({username: req.user.username}, function(error, user){
+		console.log(req.body);
+		user.work = req.body.work == 'on' ? true : false;
+		user.exercise = req.body.exercise == 'on' ? true : false;
+		user.entertainment = req.body.entertainment == 'on' ? true : false;
+		user.school = req.body.school == 'on' ? true : false;
+		user.errands = req.body.errands == 'on' ? true : false;
+		user.family = req.body.family == 'on' ? true : false;
+		user.goal = req.body.workGoal;
+
+		user.save(function(err) {
+			if (err){
+				console.log(err);
+			}
+		});
+
+	});	
+	res.redirect('/settings');
+});
+
+
 app.get('/add', ensureAuthenticated, routes.add);
 app.post('/add', ensureAuthenticated, function(req, res) {
 	User.findOne({username: req.user.username}, function(error, user){
@@ -939,7 +988,7 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 			}
 		});
 	res.redirect('/workplay');
-})
+});
 
 //other items
 app.get('/calendar', ensureAuthenticated, routes.calendar);

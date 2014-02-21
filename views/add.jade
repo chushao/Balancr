@@ -46,10 +46,7 @@ block content
                                             input#play(type='radio', name='workplayRadios', value='play')
                                             span.radioOption Play
                             .form-group
-
-                                a((id='submitBtn', type='submit',value='Submit')
-                                    .btn.btn-primary.W-100
-                                        span.Fw-b Submit
+                                input(id='submitBtn', type='submit',value='Submit').btn.btn-primary.W-100
         script.
             $('#timeSpent').on('input', function (e) {
                 if ($('#timeSpent').val() === '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minutes') {
