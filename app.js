@@ -169,8 +169,22 @@ passport.use(new FacebookStrategy({
 	callbackURL: authids.facebook.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	process.nextTick(function () {
-		return done(null, profile);
+	User.findOne( { email: profile.emails[0] }, function(err, user) {
+		if(err) {console.log(err);}
+		else if(!user){
+			var newUser = new User({
+				email: profile.emails[0],
+				id: Math.floor((Math.random()*1000)+1),
+				username: profile.emails[0],
+				categories : [ 	"Work", "Exercise",
+			 		"Entertainment", "School",
+			 		"Social", "Errands",
+			  	"Family", "Other" ]
+			});
+		}
+		else {
+			return done(null, user); //maybe should be profile?
+		}
 	});
 }
 ));
@@ -202,14 +216,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 //correctly routes to facebook for login
 app.get('/auth/facebook',
 	passport.authenticate('facebook'),
-	function(req, res){
+	function (req, res){
 	});
 
 //doesn't currently work
 app.get('/auth/facebook/callback',
 	passport.authenticate('facebook', { failureRedirect: '/' }),
 	function (req, res) {
-		res.redirect('/workplay/all'); 
+		res.redirect('/workplay'); 
 	});
 
 
