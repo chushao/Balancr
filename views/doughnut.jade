@@ -3,7 +3,7 @@ extends layout
 block content
     .page
         .pageHeading
-            span.heading doughnut
+            span.heading categories
             span.subheading
                 a(href="calendar").link #{pageData.dDate}
                     span.glyphicon.glyphicon-chevron-right
@@ -14,69 +14,69 @@ block content
                     td
                         .color(style='background-color: #F7464A;')
                     td.percent #{pageData.exercisePercent}%
-                    td.category Exercise
+                    td.category.Ta-start Exercise
                     td.category.Ta-start
                         a(href="details/category/exercise").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #46BFBD;')
                     td.percent #{pageData.workPercent}%
-                    td.category Work
+                    td.category.Ta-start Work
                     td.category.Ta-start
                         a(href="details/category/work").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #FDB45C;')
                     td.percent #{pageData.entertainmentPercent}%
-                    td.category Entertainment
+                    td.category.Ta-start Entertainment
                     td.category.Ta-start
                         a(href="details/category/entertainment").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #949FB1;')
                     td.percent #{pageData.schoolPercent}%
-                    td.category School
+                    td.category.Ta-start School
                     td.category.Ta-start
                         a(href="details/category/school").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #6495ED;')
                     td.percent #{pageData.socialPercent}%
-                    td.category Social
+                    td.category.Ta-start Social
                     td.category.Ta-start
                         a(href="details/category/social").link
-                            span.glyphicon.glyphicon-list.iconLink
+                            span.glyphicon.glyphicon-list
                 tr
                     td
                         .color(style='background-color: #4D5360;')
                     td.percent #{pageData.errandsPercent}%
-                    td.category Errands
+                    td.category.Ta-start Errands
                     td.category.Ta-start
                         a(href="details/category/errands").link
-                            span.glyphicon.glyphicon-list.iconLink        
+                            span.glyphicon.glyphicon-list    
                 tr
                     td
                         .color(style='background-color: #7CCD7C;')
                     td.percent #{pageData.familyPercent}%
-                    td.category Family
+                    td.category.Ta-start Family
                     td.category.Ta-start
                         a(href="details/category/family").link
-                            span.glyphicon.glyphicon-list.iconLink        
+                            span.glyphicon.glyphicon-list       
                 tr
                     td
                         .color(style='background-color: #7171C6;')
                     td.percent #{pageData.otherPercent}%
-                    td.category Other
+                    td.category.Ta-start Other
                     td.category.Ta-start
                         a(href="details/category/other").link
-                            span.glyphicon.glyphicon-list.iconLink        
-
-
-
+                            span.glyphicon.glyphicon-list
+            .stat.Fz-xs.Ta-start
+                span.glyphicon.glyphicon-info-sign.Mend-4
+                span This doughnut graph shows the balance between all of your activities based on your category labels.
 
     script.
         var doughnutData = [
