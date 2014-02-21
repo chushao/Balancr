@@ -6,110 +6,74 @@ block content
             span.heading details
             span.subheading= category
         .pageContent.activityList.Ta-start
-            //make a loop that has this element for each activity
-            .activityItem#activityID
-                .activityInfo
-                    .row
-                        .col-xs-12.activityName Running around a lot
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b Date:
-                        .col-xs-7.activityDate 1/29/14
-                        .col-xs-5.Ta-end.Fw-b Duration:
-                        .col-xs-7.activityDuration 1 hour
-                        .col-xs-5.Ta-end.Fw-b Category:
-                        .col-xs-7.activityCategory Exercise
-                        .col-xs-5.Ta-end.Fw-b Work/Play:
-                        .col-xs-7.activityWorkPlay Play
-                    .row
-                        .col-xs-5.col-xs-offset-7.Ta-end
-                            //instead of the links you can listen to these glyphs for action
-                            a(href="/details?category=" + category).editActivity
-                                span.link.glyphicon.glyphicon-pencil 
-                            a(href="/details?category=" + category).deleteActivity
-                                span.link.glyphicon.glyphicon-trash
-                .activityEditFields.Hidden
-                    .row.Mb-10
-                        .col-xs-12
-                            input.form-control(type='text', name='date', id='activityID*name', value='Running around in a circle')
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b.Ta-v Date:
-                        .col-xs-7.activityDate 
-                            input.form-control(type='text', name='date', id='activityID*date', value='1/29/14')
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b Duration:
-                        .col-xs-7.activityDuration
-                            input.form-control(type='text', name='duration', id='activityID*duration', value='1 hour')
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b Category:
-                        .col-xs-7.activityCategory
-                            select.form-control(type='select', name='category', id='activityID*category')
-                                option Exercise
-                                option Family
-                                option Fun
-                                option Job
-                                option School
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b Work/Play:
-                        .col-xs-7.activityWorkPlay
-                            select.form-control(type='select', name='category', id='activityID*workplay')
-                                option Play
-                                option Work
-                    .row
-                        .col-xs-6
-                            .btn.btn-default.cancelEdit
-                                span Cancel
-                        .col-xs-6.Ta-end
-                            //instead of the links you can listen to these glyphs for action
-                            input.form-control(type='submit', value='Save').btn.btn-primary.edit
-                .activityDeletePane.Hidden
-                    .row
-                        .col-xs-12.Fw-b.Fz-l Delete this activity?
-                    .row
-                        .col-xs-6.Ta-end
-                            .btn.btn-default.cancelDelete
-                                span Cancel
-                        .col-xs-6.Ta-start
-                            .btn.btn-danger.delete
-                                span Delete
-            //dummy activities
-            .activityItem#activityID
-                    .row
-                        .col-xs-12.activityName Sitting up
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b Date:
-                        .col-xs-7.activityDate 1/29/14
-                        .col-xs-5.Ta-end.Fw-b Duration:
-                        .col-xs-7.activityDuration 1 hour
-                        .col-xs-5.Ta-end.Fw-b Category:
-                        .col-xs-7.activityCategory Exercise
-                        .col-xs-5.Ta-end.Fw-b Work/Play:
-                        .col-xs-7.activityWorkPlay Play
-                    .row
-                        .col-xs-5.col-xs-offset-7.Ta-end
-                            //instead of the links you can listen to these glyphs for action
-                            a(href="/details?category=" + category).editActivity
-                                span.link.glyphicon.glyphicon-pencil 
-                            a(href="/details?category=" + category).deleteActivity
-                                span.link.glyphicon.glyphicon-trash
-            .activityItem#activityID
-                    .row
-                        .col-xs-12.activityName Jumping over things
-                    .row.Mb-10.Fz-s
-                        .col-xs-5.Ta-end.Fw-b Date:
-                        .col-xs-7.activityDate 1/29/14
-                        .col-xs-5.Ta-end.Fw-b Duration:
-                        .col-xs-7.activityDuration 1 hour
-                        .col-xs-5.Ta-end.Fw-b Category:
-                        .col-xs-7.activityCategory Exercise
-                        .col-xs-5.Ta-end.Fw-b Work/Play:
-                        .col-xs-7.activityWorkPlay Play
-                    .row
-                        .col-xs-5.col-xs-offset-7.Ta-end
-                            //instead of the links you can listen to these glyphs for action
-                            a(href="/details?category=" + category).editActivity
-                                span.link.glyphicon.glyphicon-pencil 
-                            a(href="/details?category=" + category).deleteActivity
-                                span.link.glyphicon.glyphicon-trash
+            - each detail in pageData.detailList
+                .activityItem 
+                    .activityInfo
+                        .row
+                            .col-xs-12.activityName #{detail.activity}
+                        .row.Mb-10.Fz-s
+                            .col-xs-5.Ta-end.Fw-b Date:
+                            .col-xs-7.activityDate #{detail.date}
+                            .col-xs-5.Ta-end.Fw-b Duration:
+                            .col-xs-7.activityDuration #{detail.durationTime} #{detail.durationStr}
+                            .col-xs-5.Ta-end.Fw-b Category:
+                            .col-xs-7.activityCategory #{detail.category}
+                            .col-xs-5.Ta-end.Fw-b Work/Play:
+                            .col-xs-7.activityWorkPlay #{detail.workplay}
+                            .col-xs-5.Ta-end.Fw-b.Hidden activityID
+                            .col-xs-7.activityID.Hidden #{detail.activityID}
+
+                        .row
+                            .col-xs-5.col-xs-offset-7.Ta-end
+                                //instead of the links you can listen to these glyphs for action
+                                a(href="/details?category=" + category).editActivity
+                                    span.link.glyphicon.glyphicon-pencil 
+                                a(href="/details?category=" + category).deleteActivity
+                                    span.link.glyphicon.glyphicon-trash
+                    .activityEditFields.Hidden
+                        .row.Mb-10
+                            .col-xs-12
+                                input.form-control(type='text', name='date', id='activityID*name', value='#{detail.activity}')
+                        .row.Mb-10.Fz-s
+                            .col-xs-5.Ta-end.Fw-b.Ta-v Date:
+                            .col-xs-7.activityDate 
+                                input.form-control(type='text', name='date', id='activityID*date', value='1/29/14')
+                        .row.Mb-10.Fz-s
+                            .col-xs-5.Ta-end.Fw-b Duration:
+                            .col-xs-7.activityDuration
+                                input.form-control(type='text', name='duration', id='activityID*duration', value='1 hour')
+                        .row.Mb-10.Fz-s
+                            .col-xs-5.Ta-end.Fw-b Category:
+                            .col-xs-7.activityCategory
+                                select.form-control(type='select', name='category', id='activityID*category')
+                                    option Exercise
+                                    option Family
+                                    option Fun
+                                    option Job
+                                    option School
+                        .row.Mb-10.Fz-s
+                            .col-xs-5.Ta-end.Fw-b Work/Play:
+                            .col-xs-7.activityWorkPlay
+                                select.form-control(type='select', name='category', id='activityID*workplay')
+                                    option Play
+                                    option Work
+                        .row
+                            .col-xs-6
+                                .btn.btn-default.cancelEdit
+                                    span Cancel
+                            .col-xs-6.Ta-end
+                                //instead of the links you can listen to these glyphs for action
+                                input.form-control(type='submit', value='Save').btn.btn-primary.edit
+                    .activityDeletePane.Hidden
+                        .row
+                            .col-xs-12.Fw-b.Fz-l Delete this activity?
+                        .row
+                            .col-xs-6.Ta-end
+                                .btn.btn-default.cancelDelete
+                                    span Cancel
+                            .col-xs-6.Ta-start
+                                .btn.btn-danger.delete
+                                    span Delete
 
     script.
         $('.editActivity').click(function (e) {

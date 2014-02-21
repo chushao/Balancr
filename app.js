@@ -982,7 +982,7 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 						catArr.school = data.activities[i].minutes ? catArr.school  + data.activities[i].timeSpent : catArr.school + (data.activities[i].timeSpent * 60);
 						break;
 						case "Social":
-						catArr.social = data.activities[i].minutes ? social + data.activities[i].timeSpent : social + (data.activities[i].timeSpent * 60);
+						catArr.social = data.activities[i].minutes ? catArr.social + data.activities[i].timeSpent : catArr.social + (data.activities[i].timeSpent * 60);
 						break;
 						case "Errands":
 						catArr.errands = data.activities[i].minutes ? catArr.errands + data.activities[i].timeSpent : catArr.errands + (data.activities[i].timeSpent * 60);
@@ -1004,11 +1004,11 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 		var tempVal = 0;
 		var activityVal = 0;
 		for (var key in catArr) {
-				activityVal += catArr[key];
-				if (catArr[key] > tempVal) {
-					bestActivity = key + "";
-					tempVal = catArr[key];
-				}
+			activityVal += catArr[key];
+			if (catArr[key] > tempVal) {
+				bestActivity = key + "";
+				tempVal = catArr[key];
+			}
 			
 		}
 		var activityPercent = (tempVal/activityVal) * 100;
@@ -1020,16 +1020,16 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 		var totalPercentAway = Math.abs(playGoal - currentPlayGoal) + Math.abs(workGoal - currentWorkGoal);
 
 		res.render('statistics', { pageData: { 
-				longestActivityName: longestActivityName,
-				bestActivity: bestActivity,
-				activityPercent: activityPercent,
-				playGoal: playGoal,
-				workGoal: workGoal,
-				currentPlayGoal: currentPlayGoal,
-				currentWorkGoal: currentWorkGoal,
-				totalPercentAway: totalPercentAway
-			}
-		});
+			longestActivityName: longestActivityName,
+			bestActivity: bestActivity,
+			activityPercent: activityPercent,
+			playGoal: playGoal,
+			workGoal: workGoal,
+			currentPlayGoal: currentPlayGoal,
+			currentWorkGoal: currentWorkGoal,
+			totalPercentAway: totalPercentAway
+		}
+	});
 	});
 
 });
@@ -1094,10 +1094,8 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 			console.log('no such user!')
 		} else{
 				//Data converter
-				var timeUnit = true;
-				req.body.timeUnit == "minutes" ? timeUnit = true : timeUnit = false;
-				var workUnit = true;
-				req.body.workplayRadios == 'work' ? workUnit = true : workUnit = false;
+				var timeUnit = ((req.body.timeUnit == "minutes") || (req.body.timeUnit == "minute")) ? timeUnit = true : timeUnit = false;
+				var workUnit = req.body.workplayRadios == 'work' ? workUnit = true : workUnit = false;
 				date = new Date();
 				var month = date.getMonth() + 1; //Off by 1 error for getMonth
 				var fullDate = date.getFullYear().toString() + '-' + month.toString() + '-' + date.getDate().toString();
@@ -1123,7 +1121,7 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 
 //other items
 app.get('/calendar/:path', ensureAuthenticated, function(req, res) {
-	  res.render('calendar', { title: 'calendar' });
+	res.render('calendar', { title: 'calendar' });
 });
 app.post('/calendar/:path', ensureAuthenticated, function(req, res) {
 	if (req.body.start[1] == '') {
@@ -1138,7 +1136,100 @@ app.post('/calendar/:path', ensureAuthenticated, function(req, res) {
 
 	}
 });
-app.get('/details', ensureAuthenticated, routes.details);
+app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
+	User.findOne({username: req.user.username}, function(error, data){
+		var iterativeObj = [];
+		function calculate(i) { 
+			if( i < data.activities.length ) {
+				console.log(data.activities[i]);
+				if (req.params.type == 'workplay') {
+					if (req.params.category == 'work' && data.activities[i].work) {
+						if (data.activities[i].timeSpent == '1') {
+							var minutesStr = data.activities[i].minutes ? 'minute' : 'hour';
+						} else {
+							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
+						}
+						var workplay = data.activities[i].work ? 'work' : 'play';
+						var pushObj = {
+							activityID: data.activities[i]._id,
+							activity: data.activities[i].activity,
+							date: data.activities[i].date,
+							durationTime: data.activities[i].timeSpent,
+							durationStr: minutesStr,
+							category: data.activities[i].category,
+							workplay: workplay
+						};
+						iterativeObj.push(pushObj);
+					} else if (req.params.category == 'play' && !data.activities[i].work) {
+						if (data.activities[i].timeSpent == '1') {
+							var minutesStr = data.activities[i].minutes ? 'minute' : 'hour';
+						} else {
+							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
+						}
+						var workplay = data.activities[i].work ? 'work' : 'play';
+						var pushObj = {
+							activityID: data.activities[i]._id,
+							activity: data.activities[i].activity,
+							date: data.activities[i].date,
+							durationTime: data.activities[i].timeSpent,
+							durationStr: minutesStr,
+							category: data.activities[i].category,
+							workplay: workplay
+						};
+						iterativeObj.push(pushObj);
+					}
+
+				} else if (req.params.type == 'category') {
+					if (req.params.category === data.activities[i].category) {
+						if (data.activities[i].timeSpent == '1') {
+							var minutesStr = data.activities[i].minutes ? 'minute' : 'hour';
+						} else {
+							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
+						}
+						var workplay = data.activities[i].work ? 'work' : 'play';
+						var pushObj = {
+							activityID: data.activities[i]._id,
+							activity: data.activities[i].activity,
+							date: data.activities[i].date,
+							durationTime: data.activities[i].timeSpent,
+							durationStr: minutesStr,
+							category: data.activities[i].category,
+							workplay: workplay
+						};
+						iterativeObj.push(pushObj);
+					} else if (req.params.category == 'all') {
+						if (data.activities[i].timeSpent == '1') {
+							var minutesStr = data.activities[i].minutes ? 'minute' : 'hour';
+						} else {
+							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
+						}
+						var workplay = data.activities[i].work ? 'work' : 'play';
+						var pushObj = {
+							activityID: data.activities[i]._id,
+							activity: data.activities[i].activity,
+							date: data.activities[i].date,
+							durationTime: data.activities[i].timeSpent,
+							durationStr: minutesStr,
+							category: data.activities[i].category,
+							workplay: workplay
+						};
+						iterativeObj.push(pushObj);
+					}
+
+				}
+				calculate(i+1);
+			}
+			
+		}
+		calculate(0);
+		console.log(iterativeObj);
+		res.render('details', { pageData: {detailList: iterativeObj} });
+	});
+
+
+	 
+
+});
 app.get('/signup', routes.signup);
 app.post('/signup', function (req, res, next) {
 	User.signup(req.body.email, req.body.password, function(err, user){
