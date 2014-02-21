@@ -166,11 +166,35 @@ function(email, password, done) {
 passport.use(new FacebookStrategy({
 	clientID: authids.facebook.clientID,
 	clientSecret: authids.facebook.clientSecret,
-	callbackURL: authids.facebook.callbackURL
+	callbackURL: authids.facebook.callbackURL,
+	profileFields: ['id','email','username']
 },
 function(accessToken, refreshToken, profile, done) {
+	
 	process.nextTick(function () {
-		return done(null, profile);
+
+		User.findOne( { email: profile.username}, function (err, user) {
+			if(err) {
+				console.log(err);
+				return done(err, null);
+			}
+			else if(!user){
+				var newUser = new User({
+					email: profile.username,
+					id: profile.id,
+					username: profile.username,
+					categories : [ 	"Work", "Exercise",
+				 		"Entertainment", "School",
+				 		"Social", "Errands",
+				  	"Family", "Other" ]
+				});
+				newUser.save(); 
+				return done(null, newUser);
+			}
+			else {
+				return done(null, user);
+			}
+		});
 	});
 }
 ));
@@ -201,15 +225,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //correctly routes to facebook for login
 app.get('/auth/facebook',
-	passport.authenticate('facebook'),
-	function(req, res){
+	passport.authenticate('facebook'), function (req, res){
+		console.log("you shouldn't see this")
 	});
 
 //doesn't currently work
 app.get('/auth/facebook/callback',
-	passport.authenticate('facebook', { failureRedirect: '/' }),
+	passport.authenticate('facebook', { scope: [ 'email' ], display: 'touch', failureRedirect: '/' }),
 	function (req, res) {
-		res.redirect('/workplay'); //currently directs to workplay until we have profile screen
+		res.redirect('/workplay'); 
 	});
 
 
