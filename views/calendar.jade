@@ -8,7 +8,7 @@ block content
         .fields
             .row
                 .col-xs-12
-                    form(role="form")
+                    form(action='' method='post' role="form")
                         .form-group
                             label(for='start').radioOption#start Date
                             input.form-control(type='date', name='start', id='start')
@@ -23,9 +23,7 @@ block content
                                 a(href="#").link
                                     span.glyphicon.glyphicon-remove
                         .form-group
-                                a(href=origin)
-                                   .btn.btn-primary.W-100
-                                        span.Fw-b Submit
+                                input(id='submitBtn', type='submit',value='Submit').btn.btn-primary.W-100
     script.
         $('.selectDuration').click(function (e) {
             e.preventDefault();

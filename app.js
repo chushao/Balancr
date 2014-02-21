@@ -407,13 +407,6 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 			
 		}
 		calculate(0);
-		if (isNaN(workPercent)) { workPercent = 0;}
-		if (isNaN(exercisePercent)) { exercisePercent = 0;}
-		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
-		if (isNaN(schoolPercent)) { schoolPercent = 0; }
-		if (isNaN(errandsPercent)) { errandsPercent = 0; }
-		if (isNaN(familyPercent)) { familyPercent = 0; }
-		if (isNaN(otherPercent)) { otherPercent = 0; }
 
 		total = 0;
 		if (data.work) { total += work; }
@@ -441,6 +434,15 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 		var errandsGraph = isNaN(errands) ? 0 : errands;
 		var familyGraph = isNaN(family) ? 0 : family;
 		var otherGraph = isNaN(other) ? 0 : other;
+
+		if (isNaN(workPercent)) { workPercent = 0;}
+		if (isNaN(exercisePercent)) { exercisePercent = 0;}
+		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
+		if (isNaN(schoolPercent)) { schoolPercent = 0; }
+		if (isNaN(socialPercent)) { socialPercent = 0; }
+		if (isNaN(errandsPercent)) { errandsPercent = 0; }
+		if (isNaN(familyPercent)) { familyPercent = 0; }
+		if (isNaN(otherPercent)) { otherPercent = 0; }
 
 
 		//mothereffing edge case
@@ -495,7 +497,7 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 });
 
 app.get('/doughnut/all', ensureAuthenticated, function(req, res){
-	User.findOne({username: req.user.username}, 'activities', function(error, data){
+	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
 		var entertainment = 0;
@@ -538,14 +540,6 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 				
 			}
 			calculate(0);
-			if (isNaN(workPercent)) { workPercent = 0;}
-			if (isNaN(exercisePercent)) { exercisePercent = 0;}
-			if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
-			if (isNaN(schoolPercent)) { schoolPercent = 0; }
-			if (isNaN(errandsPercent)) { errandsPercent = 0; }
-			if (isNaN(familyPercent)) { familyPercent = 0; }
-			if (isNaN(otherPercent)) { otherPercent = 0; }
-
 			
 			total = 0;
 			if (data.work) { total += work; }
@@ -573,6 +567,15 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 			var errandsGraph = isNaN(errands) ? 0 : errands;
 			var familyGraph = isNaN(family) ? 0 : family;
 			var otherGraph = isNaN(other) ? 0 : other;
+
+			if (isNaN(workPercent)) { workPercent = 0;}
+			if (isNaN(exercisePercent)) { exercisePercent = 0;}
+			if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
+			if (isNaN(schoolPercent)) { schoolPercent = 0; }
+			if (isNaN(errandsPercent)) { errandsPercent = 0; }
+			if (isNaN(familyPercent)) { familyPercent = 0; }
+			if (isNaN(otherPercent)) { otherPercent = 0; }
+			if (isNaN(socialPercent)) { socialPercent = 0; }
 
 
 		//mothereffing edge case
@@ -628,7 +631,7 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 
 
 app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
-	User.findOne({username: req.user.username}, 'activities', function(error, data){
+	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
 		var entertainment = 0;
@@ -679,14 +682,6 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 			
 		}
 		calculate(0);
-		if (isNaN(workPercent)) { workPercent = 0;}
-		if (isNaN(exercisePercent)) { exercisePercent = 0;}
-		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
-		if (isNaN(schoolPercent)) { schoolPercent = 0; }
-		if (isNaN(errandsPercent)) { errandsPercent = 0; }
-		if (isNaN(familyPercent)) { familyPercent = 9; }
-		if (isNaN(otherPercent)) { otherPercent = 0; }
-
 
 		total = 0;
 		if (data.work) { total += work; }
@@ -697,6 +692,7 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		if (data.errands) { total += errands; }
 		if (data.family) { total += family; }
 		if (data.other) { total += other; }
+
 
 		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
 		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
@@ -714,6 +710,15 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		var errandsGraph = isNaN(errands) ? 0 : errands;
 		var familyGraph = isNaN(family) ? 0 : family;
 		var otherGraph = isNaN(other) ? 0 : other;
+
+		if (isNaN(workPercent)) { workPercent = 0;}
+		if (isNaN(exercisePercent)) { exercisePercent = 0;}
+		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
+		if (isNaN(schoolPercent)) { schoolPercent = 0; }
+		if (isNaN(socialPercent)) { socialPercent = 0; }
+		if (isNaN(errandsPercent)) { errandsPercent = 0; }
+		if (isNaN(familyPercent)) { familyPercent = 0; }
+		if (isNaN(otherPercent)) { otherPercent = 0; }
 
 
 		//mothereffing edge case
@@ -768,7 +773,7 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 });
 
 app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd', ensureAuthenticated, function(req, res){
-	User.findOne({username: req.user.username}, 'activities', function(error, data){
+	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
 		var entertainment = 0;
@@ -824,13 +829,7 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 			
 		}
 		calculate(0);
-		if (isNaN(workPercent)) { workPercent = 0;}
-		if (isNaN(exercisePercent)) { exercisePercent = 0;}
-		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
-		if (isNaN(schoolPercent)) { schoolPercent = 0; }
-		if (isNaN(errandsPercent)) { errandsPercent = 0; }
-		if (isNaN(familyPercent)) { familyPercent = 9; }
-		if (isNaN(otherPercent)) { otherPercent = 0; }
+
 
 		
 		total = 0;
@@ -842,6 +841,7 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		if (data.errands) { total += errands; }
 		if (data.family) { total += family; }
 		if (data.other) { total += other; }
+
 
 		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
 		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
@@ -860,6 +860,15 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		var familyGraph = isNaN(family) ? 0 : family;
 		var otherGraph = isNaN(other) ? 0 : other;
 
+
+		if (isNaN(workPercent)) { workPercent = 0;}
+		if (isNaN(exercisePercent)) { exercisePercent = 0;}
+		if (isNaN(entertainmentPercent)) { entertainmentPercent = 0;}
+		if (isNaN(schoolPercent)) { schoolPercent = 0; }
+		if (isNaN(socialPercent)) { socialPercent = 0; }
+		if (isNaN(errandsPercent)) { errandsPercent = 0; }
+		if (isNaN(familyPercent)) { familyPercent = 0; }
+		if (isNaN(otherPercent)) { otherPercent = 0; }
 
 		//mothereffing edge case
 		if ( (workPercent == 0) && (exercisePercent == 0) && 
@@ -902,6 +911,7 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		otherGraph: otherGraph,
 		workOn: data.work,
 		exerciseOn: data.exercise,
+		socialOn: data.social,
 		entertainmentOn: data.entertainment,
 		schoolOn: data.school,
 		errandsOn: data.errands,
@@ -1112,7 +1122,22 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 });
 
 //other items
-app.get('/calendar', ensureAuthenticated, routes.calendar);
+app.get('/calendar/:path', ensureAuthenticated, function(req, res) {
+	  res.render('calendar', { title: 'calendar' });
+});
+app.post('/calendar/:path', ensureAuthenticated, function(req, res) {
+	if (req.body.start[1] == '') {
+		var dateArr = req.body.start[0].split("-");
+		var redirString = "/" + req.params.path + "/" + dateArr[0] + "/" + dateArr[1] + "/" + dateArr[2];
+		res.redirect(redirString);
+	} else {
+		var startArr = req.body.start[0].split("-");
+		var endArr = req.body.start[1].split("-");
+		var redirString = "/" + req.params.path + "/" + startArr[0] + "/" + startArr[1] + "/" + startArr[2] + "/" + endArr[0] + "/" + endArr[1] + "/" + endArr[2];
+		res.redirect(redirString);
+
+	}
+});
 app.get('/details', ensureAuthenticated, routes.details);
 app.get('/signup', routes.signup);
 app.post('/signup', function (req, res, next) {
