@@ -169,13 +169,13 @@ passport.use(new FacebookStrategy({
 	callbackURL: authids.facebook.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	User.findOne( { email: profile.emails[0] }, function(err, user) {
+	User.findOne( { email: profile.emails[0].value }, function(err, user) {
 		if(err) {console.log(err);}
 		else if(!user){
 			var newUser = new User({
-				email: profile.emails[0],
+				email: profile.emails[0].value,
 				id: Math.floor((Math.random()*1000)+1),
-				username: profile.emails[0],
+				username: profile.emails[0].value,
 				categories : [ 	"Work", "Exercise",
 			 		"Entertainment", "School",
 			 		"Social", "Errands",
@@ -221,7 +221,7 @@ app.get('/auth/facebook',
 
 //doesn't currently work
 app.get('/auth/facebook/callback',
-	passport.authenticate('facebook', { failureRedirect: '/' }),
+	passport.authenticate('facebook', { scopre: [ 'email' ] }, { failureRedirect: '/' }),
 	function (req, res) {
 		res.redirect('/workplay'); 
 	});
