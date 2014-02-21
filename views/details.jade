@@ -31,49 +31,60 @@ block content
                                 a(href="/details?category=" + category).deleteActivity
                                     span.link.glyphicon.glyphicon-trash
                     .activityEditFields.Hidden
-                        .row.Mb-10
-                            .col-xs-12
-                                input.form-control(type='text', name='date', id='activityID*name', value='#{detail.activity}')
-                        .row.Mb-10.Fz-s
-                            .col-xs-5.Ta-end.Fw-b.Ta-v Date:
-                            .col-xs-7.activityDate 
-                                input.form-control(type='text', name='date', id='activityID*date', value='1/29/14')
-                        .row.Mb-10.Fz-s
-                            .col-xs-5.Ta-end.Fw-b Duration:
-                            .col-xs-7.activityDuration
-                                input.form-control(type='text', name='duration', id='activityID*duration', value='1 hour')
-                        .row.Mb-10.Fz-s
-                            .col-xs-5.Ta-end.Fw-b Category:
-                            .col-xs-7.activityCategory
-                                select.form-control(type='select', name='category', id='activityID*category')
-                                    option Exercise
-                                    option Family
-                                    option Fun
-                                    option Job
-                                    option School
-                        .row.Mb-10.Fz-s
-                            .col-xs-5.Ta-end.Fw-b Work/Play:
-                            .col-xs-7.activityWorkPlay
-                                select.form-control(type='select', name='category', id='activityID*workplay')
-                                    option Play
-                                    option Work
-                        .row
-                            .col-xs-6
-                                .btn.btn-default.cancelEdit
-                                    span Cancel
-                            .col-xs-6.Ta-end
-                                //instead of the links you can listen to these glyphs for action
-                                input.form-control(type='submit', value='Save').btn.btn-primary.edit
+                        form(action='/edit', method='post', role='form')
+                            .row.Mb-10
+                                .col-xs-5.Ta-end.Fw-b.Ta-v Activity:
+                                .col-xs-12
+                                    input.form-control(type='text', name='activity', id='activityID*name', value='#{detail.activity}')
+                            .row.Mb-10.Fz-s
+                                .col-xs-5.Ta-end.Fw-b.Ta-v Date:
+                                .col-xs-7.activityDate 
+                                    input.form-control(type='text', name='date', id='activityID*date', value='#{detail.date}')
+                            .row.Mb-10.Fz-s
+                                .col-xs-5.Ta-end.Fw-b Duration:
+                                .col-xs-7.activityDuration
+                                    input.form-control(type='text', name='duration', id='activityID*duration', value='#{detail.durationTime} #{detail.durationStr}')
+                            .row.Mb-10.Fz-s
+                                .col-xs-5.Ta-end.Fw-b Category:
+                                .col-xs-7.activityCategory
+                                    select.form-control(type='select', name='category', id='activityID*category')
+                                        option Exercise
+                                        option Work
+                                        option Entertainment
+                                        option School
+                                        option Social
+                                        option Errands
+                                        option Family
+                                        option Other
+                            .row.Mb-10.Fz-s
+                                .col-xs-5.Ta-end.Fw-b Work/Play:
+                                .col-xs-7.activityWorkPlay
+                                    select.form-control(type='select', name='workplay', id='activityID*workplay')
+                                        option Play
+                                        option Work
+                            .row.Mb-10.Fz-s
+                                .col-xs-7.activityID
+                                    input.form-control(type='text', style="display:none", name='activityID', id='activityID', value='#{detail.activityID}')
+                            .row
+                                .col-xs-6
+                                    .btn.btn-default.cancelEdit
+                                        span Cancel
+                                .col-xs-6.Ta-end
+                                    input(id='submitBtn',type='submit', value='Save').btn.btn-primary.edit
                     .activityDeletePane.Hidden
-                        .row
-                            .col-xs-12.Fw-b.Fz-l Delete this activity?
-                        .row
-                            .col-xs-6.Ta-end
-                                .btn.btn-default.cancelDelete
-                                    span Cancel
-                            .col-xs-6.Ta-start
-                                .btn.btn-danger.delete
-                                    span Delete
+                        form(action='/delete', method='post', role='form')
+                            .row
+                                .col-xs-12.Fw-b.Fz-l Delete this activity?
+                            .row.Mb-10.Fz-s
+                                    .col-xs-7.activityID
+                                        input.form-control(type='text', style="display:none", name='activityID', id='activityID', value='#{detail.activityID}')    
+                            .row
+                                .col-xs-6.Ta-end
+                                    .btn.btn-default.cancelDelete
+                                        span Cancel
+                                .col-xs-6.Ta-start
+                                    input(id='submitBtn',type='submit', value='Delete').btn.btn-danger.delete
+                                    
 
     script.
         $('.editActivity').click(function (e) {
@@ -83,8 +94,8 @@ block content
             $('.activityEditFields').removeClass('Hidden');
         });
         $('.edit').click(function() {
-            $('.activityInfo').removeClass('Hidden');
-            $('.activityEditFields').addClass('Hidden');
+           // $('.activityInfo').removeClass('Hidden');
+            //$('.activityEditFields').addClass('Hidden');
 
             //do edit stuff after figuring out what activity being looked at
         });
@@ -100,13 +111,13 @@ block content
             $('.activityDeletePane').removeClass('Hidden');
         });
         $('.delete').click(function() {
-            $('.activityInfo').removeClass('Hidden');
-            $('.activityDeletePane').addClass('Hidden');
+            //$('.activityInfo').removeClass('Hidden');
+            //$('.activityDeletePane').addClass('Hidden');
 
             //do stuff to delete it here and then going to have to remove the item from the list
         
             //using this for now to simulate the activity got removed from html
-            $('#activityID').addClass('Hidden');
+            //$('#activityID').addClass('Hidden');
         });
         $('.cancelDelete').click(function() {
             $('.activityInfo').removeClass('Hidden');

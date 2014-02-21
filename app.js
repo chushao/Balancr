@@ -1096,16 +1096,13 @@ app.post('/add', ensureAuthenticated, function(req, res) {
 				//Data converter
 				var timeUnit = ((req.body.timeUnit == "minutes") || (req.body.timeUnit == "minute")) ? timeUnit = true : timeUnit = false;
 				var workUnit = req.body.workplayRadios == 'work' ? workUnit = true : workUnit = false;
-				date = new Date();
-				var month = date.getMonth() + 1; //Off by 1 error for getMonth
-				var fullDate = date.getFullYear().toString() + '-' + month.toString() + '-' + date.getDate().toString();
 				user.activities.push({
 					"activity" : req.body.activity,
 					"category" : req.body.category,
 					"timeSpent" : req.body.timeSpent,
 					"minutes" : timeUnit,
 					"work" : workUnit,
-					"date" : fullDate
+					"date" : req.body.date
 				});
 				user.save( function(error, data){
 					if(error){
@@ -1180,7 +1177,7 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 					}
 
 				} else if (req.params.type == 'category') {
-					if (req.params.category === data.activities[i].category) {
+					if (req.params.category.toLowerCase() == data.activities[i].category.toLowerCase()) {
 						if (data.activities[i].timeSpent == '1') {
 							var minutesStr = data.activities[i].minutes ? 'minute' : 'hour';
 						} else {
@@ -1214,6 +1211,8 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 							workplay: workplay
 						};
 						iterativeObj.push(pushObj);
+					} else {
+
 					}
 
 				}
@@ -1222,12 +1221,63 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 			
 		}
 		calculate(0);
-		console.log(iterativeObj);
 		res.render('details', { pageData: {detailList: iterativeObj} });
 	});
 
 
-	 
+
+
+});
+
+app.post('/edit', ensureAuthenticated, function(req, res) {
+	User.findOne({username: req.user.username}, function(error, data) {
+		console.log(req.body);
+		data.activities.remove(req.body.activityID);
+		data.save(edit);
+		function edit(err) {
+			if (err) {
+				console.log(err);
+			} else {
+				var timeStr = req.body.timeSpent.split(" ");
+				var minutes = (timeStr[1].indexOf("minute") !== -1) ? false : true;
+				var work = (req.body.workplay == 'Work') ? true : false;
+
+				data.activities.push({
+					"activity" : req.body.activity,
+					"category" : req.body.category,
+					"timeSpent" : timeStr[0],
+					"minutes" : minutes,
+					"work" : work,
+					"date" : req.body.date
+				});
+				data.save( function(error, data){
+					if(error){
+						console.log(error);
+					} else{
+						console.log(data);
+					}
+				});
+
+			}
+			res.redirect('/details/category/all');
+		}
+	});
+});
+
+app.post('/delete', ensureAuthenticated, function(req, res) {
+	User.findOne({username: req.user.username}, function(error, data) {
+		console.log(req.body);
+		data.activities.remove(req.body.activityID);
+		data.save(edit);
+		function edit(err) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(data);
+			}
+			res.redirect('/details/category/all');
+		}
+	});
 
 });
 app.get('/signup', routes.signup);
