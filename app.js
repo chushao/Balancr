@@ -424,7 +424,7 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 		if (data.errands) { total += errands; }
 		if (data.family) { total += family; }
 		if (data.other) { total += other; }
-	
+
 		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
 		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
 		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
@@ -547,32 +547,32 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 			if (isNaN(otherPercent)) { otherPercent = 0; }
 
 			
-		total = 0;
-		if (data.work) { total += work; }
-		if (data.exercise) { total += exercise; }
-		if (data.entertainment) { total += entertainment; } 
-		if (data.school) { total += school; }
-		if (data.social) { total += social; }
-		if (data.errands) { total += errands; }
-		if (data.family) { total += family; }
-		if (data.other) { total += other; }
-	
-		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
-		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
-		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
-		var schoolPercent = Math.round( ((school / total) * 100) * 100) / 100;
-		var socialPercent = Math.round( ((social / total) * 100) * 100) / 100;
-		var errandsPercent = Math.round( ((errands / total) * 100) * 100) / 100;
-		var familyPercent = Math.round( ((family / total) * 100) * 100) / 100;
-		var otherPercent = Math.round( ((other / total) * 100) * 100) / 100;
-		var workGraph = isNaN(work) ? 0 : work;
-		var exerciseGraph = isNaN(exercise) ? 0 : exercise;
-		var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
-		var schoolGraph = isNaN(school) ? 0 : school;
-		var socialGraph = isNaN(social) ? 0 : social;
-		var errandsGraph = isNaN(errands) ? 0 : errands;
-		var familyGraph = isNaN(family) ? 0 : family;
-		var otherGraph = isNaN(other) ? 0 : other;
+			total = 0;
+			if (data.work) { total += work; }
+			if (data.exercise) { total += exercise; }
+			if (data.entertainment) { total += entertainment; } 
+			if (data.school) { total += school; }
+			if (data.social) { total += social; }
+			if (data.errands) { total += errands; }
+			if (data.family) { total += family; }
+			if (data.other) { total += other; }
+
+			var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
+			var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
+			var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
+			var schoolPercent = Math.round( ((school / total) * 100) * 100) / 100;
+			var socialPercent = Math.round( ((social / total) * 100) * 100) / 100;
+			var errandsPercent = Math.round( ((errands / total) * 100) * 100) / 100;
+			var familyPercent = Math.round( ((family / total) * 100) * 100) / 100;
+			var otherPercent = Math.round( ((other / total) * 100) * 100) / 100;
+			var workGraph = isNaN(work) ? 0 : work;
+			var exerciseGraph = isNaN(exercise) ? 0 : exercise;
+			var entertainmentGraph = isNaN(entertainment) ? 0 : entertainment;
+			var schoolGraph = isNaN(school) ? 0 : school;
+			var socialGraph = isNaN(social) ? 0 : social;
+			var errandsGraph = isNaN(errands) ? 0 : errands;
+			var familyGraph = isNaN(family) ? 0 : family;
+			var otherGraph = isNaN(other) ? 0 : other;
 
 
 		//mothereffing edge case
@@ -697,7 +697,7 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		if (data.errands) { total += errands; }
 		if (data.family) { total += family; }
 		if (data.other) { total += other; }
-	
+
 		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
 		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
 		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
@@ -842,7 +842,7 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		if (data.errands) { total += errands; }
 		if (data.family) { total += family; }
 		if (data.other) { total += other; }
-	
+
 		var workPercent = Math.round( ((work / total) * 100) * 100) / 100;
 		var exercisePercent = Math.round( ((exercise / total) * 100) * 100) / 100;
 		var entertainmentPercent = Math.round( ((entertainment / total) * 100) * 100) / 100;
@@ -910,7 +910,119 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 	});
 });
 });
-app.get('/statistics', ensureAuthenticated, routes.statistics);
+app.get('/statistics', ensureAuthenticated, function(req, res) {
+	User.findOne({username: req.user.username}, function(error, data){
+
+
+		var work = 0;
+		var play = 0;
+		var catArr = {
+			work: 0, 
+			exercise: 0, 
+			entertainment: 0, 
+			school: 0, 
+			errands: 0, 
+			family: 0, 
+			social: 0, 
+			other: 0
+		};
+		var longestActivityName = "";
+		var longestActivityTime = 0;
+		var today = new Date();
+		today.setHours(0,0,0,0);
+		var sevendaysago = new Date();
+		sevendaysago.setHours(0,0,0,0);
+		sevendaysago.setDate(sevendaysago.getDate()-7);
+
+		function calculate(i) { 
+			
+			if( i < data.activities.length ) {
+				var date = new Date(data.activities[i].date);
+				date.setHours(0,0,0,0);
+				if ((date.getTime() >= sevendaysago.getTime()) && (date.getTime() <= today.getTime())) {
+					if (data.activities[i].timeSpent > longestActivityTime) {
+						longestActivityTime = data.activities[i].timeSpent;
+						longestActivityName = data.activities[i].activity;
+					}
+					if (data.activities[i].minutes) {
+						if (data.activities[i].work) {
+							work = work + data.activities[i].timeSpent;
+						} else {
+							play = play + data.activities[i].timeSpent;
+						}
+					} else {
+						if (data.activities[i].work) {
+							work = work + (data.activities[i].timeSpent * 60);
+						} else {
+							play = play + (data.activities[i].timeSpent * 60);
+						}	
+					}
+
+					switch(data.activities[i].category) {
+						case "Work":
+						catArr.work = data.activities[i].minutes ? catArr.work + data.activities[i].timeSpent : catArr.work + (data.activities[i].timeSpent * 60);
+						break;
+						case "Exercise":
+						catArr.exercise = data.activities[i].minutes ? catArr.exercise + data.activities[i].timeSpent : catArr.exercise + (data.activities[i].timeSpent * 60);
+						break;
+						case "Entertainment":
+						catArr.entertainment = data.activities[i].minutes ? catArr.entertainment + data.activities[i].timeSpent : catArr.entertainment + (data.activities[i].timeSpent * 60);
+						break;
+						case "School":
+						catArr.school = data.activities[i].minutes ? catArr.school  + data.activities[i].timeSpent : catArr.school + (data.activities[i].timeSpent * 60);
+						break;
+						case "Social":
+						catArr.social = data.activities[i].minutes ? social + data.activities[i].timeSpent : social + (data.activities[i].timeSpent * 60);
+						break;
+						case "Errands":
+						catArr.errands = data.activities[i].minutes ? catArr.errands + data.activities[i].timeSpent : catArr.errands + (data.activities[i].timeSpent * 60);
+						break;
+						case "Family":
+						catArr.family = data.activities[i].minutes ? catArr.family + data.activities[i].timeSpent : catArr.family + (data.activities[i].timeSpent * 60);
+						break;
+						default: //also case other
+						catArr.other = data.activities[i].minutes ? catArr.other + data.activities[i].timeSpent : catArr.other + (data.activities[i].timeSpent * 60);
+						break;
+					}
+					calculate(i+1);
+				}
+			}
+
+		}
+		calculate(0);
+		var bestActivity = "";
+		var tempVal = 0;
+		var activityVal = 0;
+		for (var key in catArr) {
+				activityVal += catArr[key];
+				if (catArr[key] > tempVal) {
+					bestActivity = key + "";
+					tempVal = catArr[key];
+				}
+			
+		}
+		var activityPercent = (tempVal/activityVal) * 100;
+		var playGoal = 100 - data.goal;
+		var workGoal = data.goal;
+		var currentWorkGoal = Math.round( ((work / (work + play)) * 100) * 100) / 100;
+		var currentPlayGoal = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
+		//TODO BUG IN THIS CALCULATION. NEED TO FIX. 
+		var totalPercentAway = Math.abs(playGoal - currentPlayGoal) + Math.abs(workGoal - currentWorkGoal);
+
+		res.render('statistics', { pageData: { 
+				longestActivityName: longestActivityName,
+				bestActivity: bestActivity,
+				activityPercent: activityPercent,
+				playGoal: playGoal,
+				workGoal: workGoal,
+				currentPlayGoal: currentPlayGoal,
+				currentWorkGoal: currentWorkGoal,
+				totalPercentAway: totalPercentAway
+			}
+		});
+	});
+
+});
 app.get('/settings', ensureAuthenticated, function(req, res) {
 	User.findOne({username: req.user.username}, function(error, user){
 		var work = user.work;
@@ -941,7 +1053,6 @@ app.get('/settings', ensureAuthenticated, function(req, res) {
 app.post('/settings', ensureAuthenticated, function(req, res) {
 	// Couldn't figure out how to use upsert, gonna use two DB calls because IDGAF
 	User.findOne({username: req.user.username}, function(error, user){
-		console.log(req.body);
 		user.work = req.body.work == 'on' ? true : false;
 		user.exercise = req.body.exercise == 'on' ? true : false;
 		user.entertainment = req.body.entertainment == 'on' ? true : false;

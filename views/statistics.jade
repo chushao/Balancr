@@ -5,11 +5,11 @@ block content
         .pageHeading
             span.heading statistics
             span.subheading
-                a(href="calendar").link This week
+                //- a(href="calendar").link This week
                     span.glyphicon.glyphicon-chevron-right
         .pageContent
             .statistics
-                .stat You are 5% away from reaching your goal of 50% work and 50% play! Currently you are at 48% work and 53% play.
-                .stat You have been doing a lot of exercise. 40% of your activities were exercise! Maybe you should consider some more relaxing?
-                .stat Compared to the last week, you have become more balanced, good job!
-                .stat You did the most of your "running" activity.
+                .stat In the past 7 days...
+                .stat You are #{pageData.totalPercentAway}% away from reaching your goal of #{pageData.workGoal}% work and #{pageData.playGoal}% play! Currently you are at #{pageData.currentWorkGoal}% work and #{pageData.currentPlayGoal}% play.
+                .stat You have been doing a lot of #{pageData.bestActivity}. #{pageData.activityPercent}% of your activities were #{pageData.bestActivity}! 
+                .stat You did the most of your "#{pageData.longestActivityName}" activity.
