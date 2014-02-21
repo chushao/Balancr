@@ -172,17 +172,13 @@ passport.use(new FacebookStrategy({
 function(accessToken, refreshToken, profile, done) {
 	
 	process.nextTick(function () {
-		console.log('got the user, yay!');
 
 		User.findOne( { email: profile.username}, function (err, user) {
-			console.log('checked for user in database');
 			if(err) {
-				console.log('error looking up user');
 				console.log(err);
 				return done(err, null);
 			}
 			else if(!user){
-				console.log('no user found');
 				var newUser = new User({
 					email: profile.username,
 					id: profile.id,
@@ -196,7 +192,6 @@ function(accessToken, refreshToken, profile, done) {
 				return done(null, newUser);
 			}
 			else {
-				console.log('user found');
 				return done(null, user);
 			}
 		});
@@ -238,7 +233,6 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback',
 	passport.authenticate('facebook', { scope: [ 'email' ], display: 'touch', failureRedirect: '/' }),
 	function (req, res) {
-		console.log('facebook authentication succeeded');
 		res.redirect('/workplay'); 
 	});
 
