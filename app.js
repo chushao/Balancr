@@ -166,25 +166,40 @@ function(email, password, done) {
 passport.use(new FacebookStrategy({
 	clientID: authids.facebook.clientID,
 	clientSecret: authids.facebook.clientSecret,
-	callbackURL: authids.facebook.callbackURL
+	callbackURL: authids.facebook.callbackURL,
+	profileFields: ['id','email','username']
 },
 function(accessToken, refreshToken, profile, done) {
-	User.findOne( { email: profile.emails[0].value }, function(err, user) {
-		if(err) {console.log(err);}
-		else if(!user){
-			var newUser = new User({
-				email: profile.emails[0].value,
-				id: Math.floor((Math.random()*1000)+1),
-				username: profile.emails[0].value,
-				categories : [ 	"Work", "Exercise",
-			 		"Entertainment", "School",
-			 		"Social", "Errands",
-			  	"Family", "Other" ]
-			});
-		}
-		else {
-			return done(null, user); //maybe should be profile?
-		}
+	
+	process.nextTick(function () {
+		console.log('got the user, yay!');
+
+		User.findOne( { email: profile.username}, function (err, user) {
+			console.log('checked for user in database');
+			if(err) {
+				console.log('error looking up user');
+				console.log(err);
+				return done(err, null);
+			}
+			else if(!user){
+				console.log('no user found');
+				var newUser = new User({
+					email: profile.username,
+					id: profile.id,
+					username: profile.username,
+					categories : [ 	"Work", "Exercise",
+				 		"Entertainment", "School",
+				 		"Social", "Errands",
+				  	"Family", "Other" ]
+				});
+				newUser.save(); 
+				return done(null, newUser);
+			}
+			else {
+				console.log('user found');
+				return done(null, user);
+			}
+		});
 	});
 }
 ));
@@ -215,14 +230,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //correctly routes to facebook for login
 app.get('/auth/facebook',
-	passport.authenticate('facebook'),
-	function (req, res){
+	passport.authenticate('facebook'), function (req, res){
+		console.log("you shouldn't see this")
 	});
 
 //doesn't currently work
 app.get('/auth/facebook/callback',
-	passport.authenticate('facebook', { scopre: [ 'email' ] }, { failureRedirect: '/' }),
+	passport.authenticate('facebook', { scope: [ 'email' ], display: 'touch', failureRedirect: '/' }),
 	function (req, res) {
+		console.log('facebook authentication succeeded');
 		res.redirect('/workplay'); 
 	});
 
