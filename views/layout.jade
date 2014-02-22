@@ -9,8 +9,9 @@ html
     script(type="text/javascript", src="/js/bootstrap.min.js")
     script(type="text/javascript", src="/js/Chart.js")
     meta(name='viewport' content='width=device-width')
+    meta(name="apple-mobile-web-app-capable" content="yes")
+    meta(name="apple-mobile-web-app-status-bar-style" content="black")
     meta(name='viewport' content='width=240, user-scalable=yes, initial-scale=0.7, maximum-scale=5.0, minimum-scale=1.0' )
-    meta(name="apple-mobile-web-app-cable" content='yes')
   body
     nav.navbar.navbar-default.navbar-static-top(role="navigation")
         .container-fluid
@@ -21,7 +22,7 @@ html
                     span.icon-bar
                     span.icon-bar
                 .navTitle 
-                    a(href="workplay").link balancr
+                    a(href="/workplay").link balancr
             .collapse.navbar-collapse(id="navbar-collapse-area")
                 ul.nav.navbar-nav
                     li#workplay
@@ -30,6 +31,8 @@ html
                         a(href="/doughnut") doughnut
                     li#add
                         a(href="/add") add activity
+                    li#history
+                        a(href="/details/category/all") history
                     li#statistics
                         a(href="/statistics") statistics
                     li#settings

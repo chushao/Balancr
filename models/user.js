@@ -5,12 +5,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId;
 
-var Goal = new Schema( {
-	name : { type: String }
-  , description : { type: String }
-  , Date : Date
-})
-
 var Activity = new Schema( {
 	activity : { type: String }
   , category : { type: String }
@@ -26,9 +20,16 @@ var User = new Schema( {
   , salt: { type: String, default: ''}
   , hash: { type: String, default: ''}
   , username: { type: String, default: '' }
-  , goals: [Goal] //Goal is empty, need to do a .array.push() for goals
+  , goal: Number  //Goal is how much % work. 1 - goals = how much % play
   , activities: [Activity] //Array of multiple Activity object
-  , categories: [] //Just a list of categories that has been used for activities of this user
+  , work: Boolean //Hard coding categories to be easier of management for settings
+  , exercise: Boolean
+  , entertainment: Boolean
+  , school: Boolean
+  , errands: Boolean
+  , family: Boolean
+  , social: Boolean
+  , other: Boolean //Even though boolean, currently will always be true
 });
 
 User.statics.signup = function(email, password, done){
@@ -42,10 +43,16 @@ User.statics.signup = function(email, password, done){
 			salt : salt,
 			hash : hash,
 			username: email,
-			categories : [ 	"Work", "Exercise",
- 					 		"Entertainment", "School",
- 					 		"Social", "Errands",
- 					  		"Family", "Other" ]
+			goal: 50,
+			work: true,
+			exercise: true,
+			entertainment: true,
+			social: true,
+			school: true,
+			errands: true,
+			family: true,
+			other: true
+
 		}, function(err, user){
 			if(err) throw err;
 			// if (err) return done(err);

@@ -8,36 +8,45 @@ block content
         .fields
                 .row
                     .col-xs-12
-                        form(role="form")
+                        form(action='/settings', method='post', role="form")
                             .form-group
                                 label(for='activity').radioOption Categories
                                 .row
                                     .col-xs-6
                                         .checkbox
-                                            input(type='checkbox', id='exercise', checked)
-                                            span Exercise
+                                            input(type='checkbox', id='work', name="work")
+                                            span Work
                                     .col-xs-6
                                         .checkbox
-                                            input(type='checkbox', id='family', checked)
+                                            input(type='checkbox', id='exercise', name="exercise")
+                                            span Exercise
+                                .row
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='entertainment', name="entertainment")
+                                            span Entertainment
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='school', name="school")
+                                            span School
+                                .row
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='errands', name="errands")
+                                            span Errands
+                                    .col-xs-6
+                                        .checkbox
+                                            input(type='checkbox', id='family', name="family")
                                             span Family
                                 .row
                                     .col-xs-6
                                         .checkbox
-                                            input(type='checkbox', id='fun', checked)
-                                            span Fun
+                                            input(type='checkbox', id='social', name="social")
+                                            span Social
                                     .col-xs-6
                                         .checkbox
-                                            input(type='checkbox', id='jobg', checked)
-                                            span Job
-                                .row
-                                    .col-xs-6
-                                        .checkbox
-                                            input(type='checkbox', id='relaxation')
-                                            span Relaxation
-                                    .col-xs-6
-                                        .checkbox
-                                            input(type='checkbox', id='school', checked)
-                                            span School
+                                            input(type='checkbox', id='other', name="other")
+                                            span Other
                             .form-group
                                 label(for='activity').radioOption Goals
                                 .row
@@ -47,21 +56,45 @@ block content
                                         span.radioOption Play %
                                 .row
                                     .col-xs-6
-                                        input.form-control(type='number', min='0', name='work', id='work', value='50')
+                                        input.form-control(type='number', min='0', name='workGoal', id='workGoal', value='#{pageData.workGoal}')
                                     .col-xs-6
-                                        input.form-control(type='number', min='0', name='play', id='play', value='50')
+                                        input.form-control(type='number', min='0', name='playGoal', id='playGoal', value='#{pageData.playGoal}')
                             .form-group
-                                a(href="/workplay")
-                                    .btn.btn-primary.W-100
-                                        span.Fw-b Submit
+                                input(id='submitBtn', type='submit',value='Submit').btn.btn-primary.W-100
     script.
-        $('#work').on('input', function () {
-            if (parseInt($('#work').val())) {
-                $('#play').val(100 - $('#work').val());
+        $('#workGoal').on('input', function () {
+            if (parseInt($('#workGoal').val())) {
+                $('#playGoal').val(100 - $('#workGoal').val());
             }
         });
-        $('#play').on('input', function () {
-            if (parseInt($('#play').val())) {
-                $('#work').val(100 - $('#play').val());
+        $('#playGoal').on('input', function () {
+            if (parseInt($('#playGoal').val())) {
+                $('#workGoal').val(100 - $('#playGoal').val());
+            }
+        });
+        $(function() {
+            if (#{pageData.work}) {
+                $('#work').attr('checked', true);
+            }
+            if (#{pageData.entertainment}) {
+                $('#entertainment').attr('checked', true);
+            }
+            if (#{pageData.exercise}) {
+                $('#exercise').attr('checked', true);
+            }
+            if (#{pageData.errands}) {
+                $('#errands').attr('checked', true);
+            }
+            if (#{pageData.school}) {
+                $('#school').attr('checked', true);
+            }
+            if (#{pageData.family}) {
+                $('#family').attr('checked', true);
+            }
+            if (#{pageData.social}) {
+                $('#social').attr('checked', true);
+            }
+            if (#{pageData.other}) {
+                $('#other').attr('checked', true);
             }
         });

@@ -13,6 +13,9 @@ block content
                                 label(for='activity').radioOption Activity
                                 input.form-control(type='text', name='activity', id='activity', placeholder='Running')
                             .form-group
+                                label(for='activity').radioOption Date
+                                input.form-control(type='date', name='date', id='date')
+                            .form-group
                                 label(for='timeSpent').radioOption Time Spent
                                 .row
                                     .col-xs-6
@@ -44,14 +47,14 @@ block content
                                             span.radioOption Play
                             .form-group
                                 input(id='submitBtn', type='submit',value='Submit').btn.btn-primary.W-100
-                                
-    script.
-        $('#timeSpent').on('input', function (e) {
-            if ($('#timeSpent').val() === '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minutes') {
-                $('#minuteOption').html('minute');
-                $('#hourOption').html('hour');
-            } else if ($('#timeSpent').val() !== '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minute') {
-                $('#minuteOption').html('minutes');
-                $('#hourOption').html('hours');
-            }
-        });
+        script.
+            $('#timeSpent').on('input', function (e) {
+                if ($('#timeSpent').val() === '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minutes') {
+                    $('#minuteOption').html('minute');
+                    $('#hourOption').html('hour');
+                } else if ($('#timeSpent').val() !== '1' && $('#timeSpent').val() !== '' && $('#minuteOption').val() === 'minute') {
+                    $('#minuteOption').html('minutes');
+                    $('#hourOption').html('hours');
+                }
+            });
+

@@ -5,20 +5,30 @@ block content
         .pageHeading
             span.heading work/play
             span.subheading
-                a(href="calendar?origin=workplay").link #{pageData.wpDate}
+                a(href="/calendar/workplay").link #{pageData.wpDate}
                     span.glyphicon.glyphicon-chevron-right
         .pageContent
             canvas#canvas(height="500px", width="500px")
-            .row
-                .col-xs-6.percent #{pageData.workPercent}%
-                .col-xs-6.percent #{pageData.playPercent}%
-            .row
-                .col-xs-6.category WORK
-                    a(href="details?category=work").link
-                        span.glyphicon.glyphicon-list.iconLink
-                .col-xs-6.category PLAY
-                    a(href="details?category=play").link
-                        span.glyphicon.glyphicon-list.iconLink
+            table.table.table-condensed.table-striped#doughnutTable
+                tr
+                    td
+                        .color(style='background-color: #69D2E7;')
+                    td.percent #{pageData.workPercent}%
+                    td.category.Ta-start Work
+                    td.category.Ta-start
+                        a(href="/details/workplay/work").link
+                            span.glyphicon.glyphicon-list
+                tr
+                    td
+                        .color(style='background-color: #F38630;')
+                    td.percent #{pageData.playPercent}%
+                    td.category.Ta-start Play
+                    td.category.Ta-start
+                        a(href="/details/workplay/play").link
+                            span.glyphicon.glyphicon-list
+            .stat.Fz-xs.Ta-start
+                span.glyphicon.glyphicon-info-sign.Mend-4
+                span This pie graph displays the balance between all of your activities based on the work and play labels.
 
     script.
         var pieData = [
