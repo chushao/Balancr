@@ -1011,13 +1011,18 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 			}
 			
 		}
-		var activityPercent = (tempVal/activityVal) * 100;
+		var activityPercent = Math.round( ((tempVal/activityVal) * 100) * 100) /100;
 		var playGoal = 100 - data.goal;
 		var workGoal = data.goal;
 		var currentWorkGoal = Math.round( ((work / (work + play)) * 100) * 100) / 100;
 		var currentPlayGoal = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
 		//TODO BUG IN THIS CALCULATION. NEED TO FIX. 
-		var totalPercentAway = Math.abs(playGoal - currentPlayGoal) + Math.abs(workGoal - currentWorkGoal);
+		var totalPercentAway = Math.abs(playGoal - currentPlayGoal);
+
+		if(isNaN(totalPercentAway)) {
+			console.log("totalPercentAway is not a number");
+			totalPercentAway = -1;
+		}
 
 		res.render('statistics', { pageData: { 
 			longestActivityName: longestActivityName,
