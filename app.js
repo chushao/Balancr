@@ -540,6 +540,21 @@ app.get('/workplay', ensureAuthenticated, function(req, res){
 
 });
 
+app.get('/add', ensureAuthenticated, function(req, res){
+	User.findOne({username: req.user.username}, function(error, data){
+		res.render('add', { pageData: {
+			workOn: data.work,
+			exerciseOn: data.exercise,
+			entertainmentOn: data.entertainment,
+			schoolOn: data.school,
+			socialOn: data.social,
+			errandsOn: data.errands,
+			familyOn: data.family,
+			otherOn: data.other }
+		});
+	});
+});
+
 app.get('/doughnut', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
@@ -1334,11 +1349,19 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 						} else {
 							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
 						}
-						var workplay = data.activities[i].work ? 'work' : 'play';
+						var workplay = data.activities[i].work ? 'Work' : 'Play';
+						var date = new Date(data.activities[i].date),
+							mm = date.getMonth() + 1,
+							dd = date.getDate(),
+							yyyy = date.getFullYear();
+						if (mm < 10) { mm = '0' + mm; }
+						if (dd < 10) { dd = '0' + dd; }
+						date = mm + '/' + dd + '/' + yyyy;
 						var pushObj = {
 							activityID: data.activities[i]._id,
 							activity: data.activities[i].activity,
 							date: data.activities[i].date,
+							parsedDate: date,
 							durationTime: data.activities[i].timeSpent,
 							durationStr: minutesStr,
 							category: data.activities[i].category,
@@ -1351,11 +1374,19 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 						} else {
 							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
 						}
-						var workplay = data.activities[i].work ? 'work' : 'play';
+						var workplay = data.activities[i].work ? 'Work' : 'Play';
+						var date = new Date(data.activities[i].date),
+							mm = date.getMonth() + 1,
+							dd = date.getDate(),
+							yyyy = date.getFullYear();
+						if (mm < 10) { mm = '0' + mm; }
+						if (dd < 10) { dd = '0' + dd; }
+						date = mm + '/' + dd + '/' + yyyy;
 						var pushObj = {
 							activityID: data.activities[i]._id,
 							activity: data.activities[i].activity,
 							date: data.activities[i].date,
+							parsedDate: date,
 							durationTime: data.activities[i].timeSpent,
 							durationStr: minutesStr,
 							category: data.activities[i].category,
@@ -1371,28 +1402,43 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 						} else {
 							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
 						}
-						var workplay = data.activities[i].work ? 'work' : 'play';
+						var workplay = data.activities[i].work ? 'Work' : 'Play';
+						var date = new Date(data.activities[i].date),
+							mm = date.getMonth() + 1,
+							dd = date.getDate(),
+							yyyy = date.getFullYear();
+						if (mm < 10) { mm = '0' + mm; }
+						if (dd < 10) { dd = '0' + dd; }
+						date = mm + '/' + dd + '/' + yyyy;
 						var pushObj = {
 							activityID: data.activities[i]._id,
 							activity: data.activities[i].activity,
 							date: data.activities[i].date,
+							parsedDate: date,
 							durationTime: data.activities[i].timeSpent,
 							durationStr: minutesStr,
 							category: data.activities[i].category,
 							workplay: workplay
 						};
-						iterativeObj.push(pushObj);
 					} else if (req.params.category == 'all') {
 						if (data.activities[i].timeSpent == '1') {
 							var minutesStr = data.activities[i].minutes ? 'minute' : 'hour';
 						} else {
 							var minutesStr = data.activities[i].minutes ? 'minutes' : 'hours';
 						}
-						var workplay = data.activities[i].work ? 'work' : 'play';
+						var workplay = data.activities[i].work ? 'Work' : 'Play';
+						var date = new Date(data.activities[i].date),
+							mm = date.getMonth() + 1,
+							dd = date.getDate(),
+							yyyy = date.getFullYear();
+						if (mm < 10) { mm = '0' + mm; }
+						if (dd < 10) { dd = '0' + dd; }
+						date = mm + '/' + dd + '/' + yyyy;
 						var pushObj = {
 							activityID: data.activities[i]._id,
 							activity: data.activities[i].activity,
 							date: data.activities[i].date,
+							parsedDate: date,
 							durationTime: data.activities[i].timeSpent,
 							durationStr: minutesStr,
 							category: data.activities[i].category,
@@ -1409,7 +1455,17 @@ app.get('/details/:type/:category', ensureAuthenticated, function(req,res) {
 			
 		}
 		calculate(0);
-		res.render('details', { pageData: {detailList: iterativeObj} });
+		res.render('details', { pageData: { 
+			detailList: iterativeObj, 
+			workOn: data.work,
+			exerciseOn: data.exercise,
+			entertainmentOn: data.entertainment,
+			schoolOn: data.school,
+			socialOn: data.social,
+			errandsOn: data.errands,
+			familyOn: data.family,
+			otherOn: data.other } 
+		});
 	});
 
 
