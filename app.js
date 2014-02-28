@@ -555,7 +555,7 @@ app.get('/add', ensureAuthenticated, function(req, res){
 	});
 });
 
-app.get('/doughnut', ensureAuthenticated, function(req, res){
+app.get('/categories', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
@@ -664,7 +664,7 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 		otherPercent = 0;
 	}
 
-	res.render('doughnut', { pageData: {
+	res.render('categories', { pageData: {
 		dDate: 'Today', 
 		workPercent: workPercent, 
 		exercisePercent: exercisePercent, 
@@ -694,7 +694,7 @@ app.get('/doughnut', ensureAuthenticated, function(req, res){
 });
 });
 
-app.get('/doughnut/all', ensureAuthenticated, function(req, res){
+app.get('/categories/all', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
@@ -797,7 +797,7 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 		otherPercent = 0;
 	}
 
-	res.render('doughnut', { pageData: {
+	res.render('categories', { pageData: {
 		dDate: 'All', 
 		workPercent: workPercent, 
 		exercisePercent: exercisePercent, 
@@ -828,7 +828,7 @@ app.get('/doughnut/all', ensureAuthenticated, function(req, res){
 });
 
 
-app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
+app.get('/categories/:year/:month/:day', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
@@ -940,7 +940,7 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 		otherPercent = 0;
 	}
 
-	res.render('doughnut', { pageData: { 
+	res.render('categories', { pageData: { 
 		dDate: queryDate,
 		workPercent: workPercent, 
 		exercisePercent: exercisePercent, 
@@ -970,7 +970,7 @@ app.get('/doughnut/:year/:month/:day', ensureAuthenticated, function(req, res){
 });
 });
 
-app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd', ensureAuthenticated, function(req, res){
+app.get('/categories/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, function(error, data){
 		var work = 0;
 		var exercise = 0;
@@ -1089,7 +1089,7 @@ app.get('/doughnut/:yearStart/:monthStart/:dayStart/:yearEnd/:monthEnd/:dayEnd',
 		otherPercent = 0;
 	}
 
-	res.render('doughnut', { pageData: { 
+	res.render('categories', { pageData: { 
 		dDate: startDate+ ' to ' +endDate,
 		workPercent: workPercent, 
 		exercisePercent: exercisePercent, 
