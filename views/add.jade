@@ -35,14 +35,22 @@ block content
                             .form-group
                                 label(for='category').radioOption Category
                                 select.form-control(type='select', name='category', id='category')
-                                    option Job
-                                    option Exercise
-                                    option Entertainment
-                                    option School
-                                    option Social
-                                    option Errands
-                                    option Family
-                                    option Other
+                                     if pageData.workOn
+                                        option Job
+                                     if pageData.exerciseOn
+                                        option Exercise
+                                     if pageData.entertainmentOn
+                                        option Entertainment
+                                     if pageData.schoolOn
+                                        option School
+                                     if pageData.socialOn
+                                        option Social
+                                     if pageData.errandsOn
+                                        option Errands
+                                     if pageData.familyOn
+                                        option Family
+                                     if pageData.otherOn
+                                        option Other
                             .form-group
                                 .row.Ta-c
                                     .col-xs-6
