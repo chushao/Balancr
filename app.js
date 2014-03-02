@@ -1215,10 +1215,11 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 		var currentWorkGoal = Math.round( ((work / (work + play)) * 100) * 100) / 100;
 		var currentPlayGoal = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
 		//TODO BUG IN THIS CALCULATION. NEED TO FIX. 
-		var totalPercentAway = Math.abs(playGoal - currentPlayGoal);
+		var totalPercentAway = Math.round(Math.abs(playGoal - currentPlayGoal) * 100) / 100;
 
 		if(isNaN(totalPercentAway)) {
 			console.log("totalPercentAway is not a number");
+			console.log(totalPercentAway);
 			totalPercentAway = -1;
 		}
 
