@@ -5,3 +5,16 @@
 
   ga('create', 'UA-48534451-1', 'balancr.herokuapp.com');
   ga('send', 'pageview');
+
+
+$(document).ready(function() {
+	$("#workplay").click(function() {
+		console.log("workplay clicked");
+		ga("send", "event", "pressed", "click", "workplay");
+	})
+
+	$("#doughnut").click(function() {
+		console.log("category clicked");
+		ga("send", "event", "pressed", "click", "category");
+	})
+})
