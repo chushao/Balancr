@@ -6,12 +6,16 @@ block content
             span.heading details
             span.subheading= category
         .pageContent.activityList.Ta-start
+            if pageData.detailList.length == 0
+                p.Fw-b There are no activities. You can add some on the 
+                    a(href="/add").link add activity 
+                    span page.
             - each detail in pageData.detailList
                 .activityItem 
                     .activityInfo
-                        .row
+                        .row.Mb-10
                             .col-xs-12.activityName #{detail.activity}
-                        .row.Mb-10.Fz-s
+                        .row.Mb-20.Fz-s
                             .col-xs-5.Ta-end.Fw-b Date:
                             .col-xs-7.activityDate #{detail.parsedDate}
                             .col-xs-5.Ta-end.Fw-b Duration:
@@ -22,14 +26,17 @@ block content
                             .col-xs-7.activityWorkPlay #{detail.workplay}
                             .col-xs-5.Ta-end.Fw-b.Hidden activityID
                             .col-xs-7.activityID.Hidden #{detail.activityID}
-
                         .row
-                            .col-xs-5.col-xs-offset-7.Ta-end
+                            .col-xs-10.col-xs-offset-2.Ta-end
                                 //instead of the links you can listen to these glyphs for action
                                 a(href="/details?category=" + category).editActivity
-                                    span.link.glyphicon.glyphicon-pencil 
+                                    btn.btn-default.btn
+                                        span.link.glyphicon.glyphicon-pencil 
+                                        span.link.Mstart-5 Edit
                                 a(href="/details?category=" + category).deleteActivity
-                                    span.link.glyphicon.glyphicon-trash
+                                    btn.btn-default.btn
+                                        span.link.glyphicon.glyphicon-trash
+                                        span.link.Mstart-5 Delete
                     .activityEditFields.Hidden
                         form(action='/edit', method='post', role='form')
                             .row.Mb-10

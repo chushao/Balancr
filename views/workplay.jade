@@ -6,26 +6,34 @@ block content
             span.heading work/play
             span.subheading
                 a(href="/calendar/workplay").link #{pageData.wpDate}
-                    span.glyphicon.glyphicon-chevron-right
+                        span.glyphicon.glyphicon-chevron-right
         .pageContent
+            if pageData.playPercent == 0 && pageData.workPercent == 0
+                p.Fw-b.Mb-20 It looks like you don't have activities. Add some on the 
+                    a(href="/add").link add activity 
+                    span page.
             canvas#canvas(height="500px", width="500px")
             table.table.table-condensed.table-striped#doughnutTable
                 tr
                     td
                         .color(style='background-color: #69D2E7;')
-                    td.percent #{pageData.workPercent}%
+                    td.percent #{pageData.workPercent}
+                        span.percentSign %
                     td.category.Ta-start Work
                     td.category.Ta-start
-                        a(href="/details/workplay/work").link
-                            span.glyphicon.glyphicon-list
+                        a(href="/details/workplay/work")
+                            btn.btn.btn-default
+                                span.glyphicon.glyphicon-list.link
                 tr
                     td
                         .color(style='background-color: #F38630;')
-                    td.percent #{pageData.playPercent}%
+                    td.percent #{pageData.playPercent}
+                        span.percentSign %
                     td.category.Ta-start Play
                     td.category.Ta-start
-                        a(href="/details/workplay/play").link
-                            span.glyphicon.glyphicon-list
+                        a(href="/details/workplay/play")
+                            btn.btn.btn-default
+                                span.glyphicon.glyphicon-list.link
             .stat.Fz-xs.Ta-start
                 span.glyphicon.glyphicon-info-sign.Mend-4
                 span This pie graph displays the balance between all of your activities based on the work and play labels.
