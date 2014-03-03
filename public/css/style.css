@@ -39,7 +39,7 @@ body {
 }
 
 .percent {
-    font-size: 35px;
+    font-size: 30px;
 }
 .category {
     font-size: 18px;
@@ -161,6 +161,11 @@ body {
     margin-bottom: 20px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+}
+
+.percentSign {
+    font-size: 25px;
+    vertical-align: middle;
 }
 
 @font-face {
