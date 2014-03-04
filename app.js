@@ -1192,8 +1192,8 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 						catArr.other = data.activities[i].minutes ? catArr.other + data.activities[i].timeSpent : catArr.other + (data.activities[i].timeSpent * 60);
 						break;
 					}
-					calculate(i+1);
 				}
+				calculate(i+1);
 			}
 
 		}
@@ -1214,7 +1214,6 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 		var workGoal = data.goal;
 		var currentWorkGoal = Math.round( ((work / (work + play)) * 100) * 100) / 100;
 		var currentPlayGoal = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
-		//TODO BUG IN THIS CALCULATION. NEED TO FIX. 
 		var totalPercentAway = Math.round(Math.abs(playGoal - currentPlayGoal) * 100) / 100;
 
 		if(isNaN(totalPercentAway)) {
