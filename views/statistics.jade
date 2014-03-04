@@ -10,6 +10,36 @@ block content
         .pageContent
             .statistics
                 .stat In the past 7 days...
+            canvas#canvas(height="500px", width="500px")
+            table.table.table-condensed.table-striped#doughnutTable
+                tr
+                    th
+                    th.category.Ta-start Category
+                    th.category.Ta-start Actual
+                    th
+                        .color(style='background-color: #F38630;')
+                    th.category.Ta-start Goal
+                    th
+                        .color(style='background-color: #69D2E7;')
+                tr
+                    td
+                    td.category.Ta-start Work
+                    td.percent #{pageData.currentWorkGoal}%
+                    td
+                    td.percent #{pageData.workGoal}%
+                    td.category.Ta-start
+                        a(href="/details/workplay/work").link
+                            span.glyphicon.glyphicon-list
+                tr
+                    td
+                    td.category.Ta-start Play
+                    td.percent #{pageData.currentPlayGoal}%
+                    td
+                    td.percent #{pageData.playGoal}%
+                    td.category.Ta-start
+                        a(href="/details/workplay/play").link
+                            span.glyphicon.glyphicon-list
+            .statistics
                 if pageData.totalPercentAway == -1
                     .stat You haven't done any activities lately. Add some to get started!
                 else if pageData.totalPercentAway == 0
@@ -20,3 +50,53 @@ block content
                     .stat You are #{pageData.totalPercentAway}% away from reaching your goal of #{pageData.workGoal}% work and #{pageData.playGoal}% play! Currently you are at #{pageData.currentWorkGoal}% work and #{pageData.currentPlayGoal}% play.
                     .stat You have been doing a lot of #{pageData.bestActivity}. #{pageData.activityPercent}% of your activities were #{pageData.bestActivity}! 
                     .stat You did the most of your "#{pageData.longestActivityName}" activity.
+    script.
+        var data = {
+            labels : ["Work","Play"],
+            datasets : [
+                {
+                    fillColor : "rgba(243,134,48,1)",
+                    strokeColor : "rgba(243,134,48,1)",
+                    // data : [1,2]
+                    data : [ #{pageData.currentWorkGoal}, #{pageData.currentPlayGoal}]
+                },
+                {
+                    fillColor : "rgba(105,210,231,1)",
+                    strokeColor : "rgba(105,210,231,1)",
+                    // data : [3,4]
+                    data : [#{pageData.workGoal},#{pageData.playGoal}]
+                }
+            ]
+        };
+        var options = {
+            scaleOverride: true,
+            scaleSteps : 10,
+            scaleStepWidth : 10,
+            scaleStartValue : 0
+        };
+
+        var barChart = new Chart(document.getElementById("canvas").getContext("2d")).Bar(data,options);
+        var canvas = document.querySelector('canvas');
+        var ctx = canvas.getContext('2d');
+
+        function resize() {
+            // Our canvas must cover full height of screen
+            // regardless of the resolution
+            var width = window.innerWidth - 50;
+            
+            // So we need to calculate the proper scaled width
+            // that should work well with every resolution
+            var ratio = canvas.height/canvas.width;
+            var height = width * ratio;
+
+            if (width > 500 || height > 500) {
+                width = 500;
+                height = 500;
+            }
+            
+            canvas.style.width = width+'px';
+            canvas.style.height = height+'px';
+        }
+
+        window.addEventListener('load', resize, false);
+        window.addEventListener('resize', resize, false);
