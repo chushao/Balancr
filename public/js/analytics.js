@@ -19,10 +19,12 @@ $(document).ready(function() {
 	$("#workplay").click(function() {
 		console.log("workplay clicked");
 		ga("send", "event", "pressed", "click", "workplay");
+		ga("send", "event", "workplay", "click");
 	})
 
 	$("#doughnut").click(function() {
 		console.log("category clicked");
 		ga("send", "event", "pressed", "click", "category");
+		ga("send", "event", "category", "click");
 	})
 })
