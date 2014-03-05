@@ -8,6 +8,10 @@ block content
                 a(href="/calendar/categories").link #{pageData.dDate}
                     span.glyphicon.glyphicon-chevron-right
         .pageContent
+            if pageData.exercisePercent == 0 && pageData.workPercent == 0 && pageData.entertainmentPercent == 0 && pageData.socialPercent == 0 && pageData.errandsPercent == 0 && pageData.familyPercent == 0 && pageData.otherPercent == 0
+                p.Fw-b.Mb-20 It looks like you don't have activities. Add some on the 
+                    a(href="/add").link add activity 
+                    span page.
             canvas#canvas(height="500px", width="500px")
             table.table.table-condensed.table-striped#doughnutTable
                 if pageData.exerciseOn
