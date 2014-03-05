@@ -7,26 +7,34 @@ block content
                 span.heading work/play
                 span.subheading
                     a(href="/calendar/workplay").link #{pageData.wpDate}
-                        span.glyphicon.glyphicon-chevron-right
+                            span.glyphicon.glyphicon-chevron-right
             .pageContent
+                if pageData.playPercent == 0 && pageData.workPercent == 0
+                    p.Fw-b.Mb-20 It looks like you don't have activities. Add some on the 
+                        a(href="/add").link add activity 
+                        span page.
                 canvas#canvas(height="500px", width="500px")
                 table.table.table-condensed.table-striped#doughnutTable
                     tr
                         td
                             .color(style='background-color: #69D2E7;')
-                        td.percent #{pageData.workPercent}%
+                        td.percent #{pageData.workPercent}
+                            span.percentSign %
                         td.category.Ta-start Work
                         td.category.Ta-start
-                            a(href="/details/workplay/work").link
-                                span.glyphicon.glyphicon-list
+                            a(href="/details/workplay/work")
+                                btn.btn.btn-default
+                                    span.glyphicon.glyphicon-list.link
                     tr
                         td
                             .color(style='background-color: #F38630;')
-                        td.percent #{pageData.playPercent}%
+                        td.percent #{pageData.playPercent}
+                            span.percentSign %
                         td.category.Ta-start Play
                         td.category.Ta-start
-                            a(href="/details/workplay/play").link
-                                span.glyphicon.glyphicon-list
+                            a(href="/details/workplay/play")
+                                btn.btn.btn-default
+                                    span.glyphicon.glyphicon-list.link
                 .stat.Fz-xs.Ta-start
                     span.glyphicon.glyphicon-info-sign.Mend-4
                     span This pie graph displays the balance between all of your activities based on the work and play labels.
@@ -71,11 +79,11 @@ block content
             window.addEventListener('load', resize, false);
             window.addEventListener('resize', resize, false);
     else
-        .page
+       .page
             .pageHeading
                 span.heading categories
                 span.subheading
-                    a(href="/calendar/category").link #{pageData.dDate}
+                    a(href="/calendar/categories").link #{pageData.dDate}
                         span.glyphicon.glyphicon-chevron-right
             .pageContent
                 canvas#canvas(height="500px", width="500px")
@@ -84,74 +92,90 @@ block content
                         tr
                             td
                                 .color(style='background-color: #F7464A;')
-                            td.percent #{pageData.exercisePercent}%
+                            td.percent #{pageData.exercisePercent}
+                                span.percentSign %
                             td.category.Ta-start Exercise
                             td.category.Ta-start
-                                a(href="/details/category/exercise").link
-                                    span.glyphicon.glyphicon-list
+                                a(href="/details/category/exercise")
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link
                     if pageData.workOn
                         tr
                             td
                                 .color(style='background-color: #46BFBD;')
-                            td.percent #{pageData.workPercent}%
-                            td.category.Ta-start Work
+                            td.percent #{pageData.workPercent}
+                                span.percentSign %
+                            td.category.Ta-start Job
                             td.category.Ta-start
                                 a(href="/details/category/work").link
-                                    span.glyphicon.glyphicon-list
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link
                     if pageData.entertainmentOn
                         tr
                             td
                                 .color(style='background-color: #FDB45C;')
-                            td.percent #{pageData.entertainmentPercent}%
+                            td.percent #{pageData.entertainmentPercent}
+                                span.percentSign %
                             td.category.Ta-start Entertainment
                             td.category.Ta-start
                                 a(href="/details/category/entertainment").link
-                                    span.glyphicon.glyphicon-list
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link
                     if pageData.schoolOn
                         tr
                             td
                                 .color(style='background-color: #949FB1;')
-                            td.percent #{pageData.schoolPercent}%
+                            td.percent #{pageData.schoolPercent}
+                                span.percentSign %
                             td.category.Ta-start School
                             td.category.Ta-start
                                 a(href="/details/category/school").link
-                                    span.glyphicon.glyphicon-list
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link
                     if pageData.socialOn
                         tr
                             td
                                 .color(style='background-color: #6495ED;')
-                            td.percent #{pageData.socialPercent}%
+                            td.percent #{pageData.socialPercent}
+                                span.percentSign %
                             td.category.Ta-start Social
                             td.category.Ta-start
                                 a(href="/details/category/social").link
-                                    span.glyphicon.glyphicon-list
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link
                     if pageData.errandsOn
                         tr
                             td
                                 .color(style='background-color: #4D5360;')
-                            td.percent #{pageData.errandsPercent}%
+                            td.percent #{pageData.errandsPercent}
+                                span.percentSign %
                             td.category.Ta-start Errands
                             td.category.Ta-start
                                 a(href="/details/category/errands").link
-                                    span.glyphicon.glyphicon-list    
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link   
                     if pageData.familyOn
                         tr
                             td
                                 .color(style='background-color: #7CCD7C;')
-                            td.percent #{pageData.familyPercent}%
+                            td.percent #{pageData.familyPercent}
+                                span.percentSign %
                             td.category.Ta-start Family
                             td.category.Ta-start
                                 a(href="/details/category/family").link
-                                    span.glyphicon.glyphicon-list       
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link     
                     if pageData.otherOn
                         tr
                             td
                                 .color(style='background-color: #7171C6;')
-                            td.percent #{pageData.otherPercent}%
+                            td.percent #{pageData.otherPercent}
+                                span.percentSign %
                             td.category.Ta-start Other
                             td.category.Ta-start
                                 a(href="/details/category/other").link
-                                    span.glyphicon.glyphicon-list
+                                    btn.btn.btn-default
+                                        span.glyphicon.glyphicon-list.link
                 .stat.Fz-xs.Ta-start
                     span.glyphicon.glyphicon-info-sign.Mend-4
                     span This doughnut graph shows the balance between all of your activities based on your category labels.
