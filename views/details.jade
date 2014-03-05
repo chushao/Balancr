@@ -3,7 +3,7 @@ extends layout
 block content
     .page
         .pageHeading
-            span.heading history
+            span.heading details
             span.subheading= category
         .pageContent.activityList.Ta-start
             if pageData.detailList.length == 0
@@ -11,7 +11,7 @@ block content
                     a(href="/add").link add activity 
                     span page.
             - each detail in pageData.detailList
-                .activityItem 
+                .activityItem(id="#{detail.activityID}")
                     .activityInfo
                         .row.Mb-10
                             .col-xs-12.activityName #{detail.activity}
@@ -140,11 +140,13 @@ block content
                                     input(id='submitBtn',type='submit', value='Delete').btn.btn-danger.delete
 
     script.
+        var id;
         $('.editActivity').click(function (e) {
             e.preventDefault();
             //figure out what activity you are hiding / unhiding for based on id
-            $('.activityInfo').addClass('Hidden');
-            $('.activityEditFields').removeClass('Hidden');
+            id = '#' + $(e.currentTarget).parent().parent().parent().parent().attr('id');
+            $(id + ' .activityInfo').addClass('Hidden');
+            $(id + ' .activityEditFields').removeClass('Hidden');
         });
         $('.edit').click(function() {
            // $('.activityInfo').removeClass('Hidden');
@@ -153,15 +155,16 @@ block content
             //do edit stuff after figuring out what activity being looked at
         });
         $('.cancelEdit').click(function() {
-            $('.activityInfo').removeClass('Hidden');
-            $('.activityEditFields').addClass('Hidden');
+            $(id + ' .activityInfo').removeClass('Hidden');
+            $(id + ' .activityEditFields').addClass('Hidden');
         });
 
         $('.deleteActivity').click(function (e) {
             e.preventDefault();
             //figure out what activity you are hiding / unhiding for based on id
-            $('.activityInfo').addClass('Hidden');
-            $('.activityDeletePane').removeClass('Hidden');
+            id = '#' + $(e.currentTarget).parent().parent().parent().parent().attr('id');
+            $(id + ' .activityInfo').addClass('Hidden');
+            $(id + ' .activityDeletePane').removeClass('Hidden');
         });
         $('.delete').click(function() {
             //$('.activityInfo').removeClass('Hidden');
@@ -173,8 +176,8 @@ block content
             //$('#activityID').addClass('Hidden');
         });
         $('.cancelDelete').click(function() {
-            $('.activityInfo').removeClass('Hidden');
-            $('.activityDeletePane').addClass('Hidden');
+            $(id + ' .activityInfo').removeClass('Hidden');
+            $(id + ' .activityDeletePane').addClass('Hidden');
         });
          $('#duration').on('input', function (e) {
             if ($('#duration').val() === '1' && $('#duration').val() !== '' && $('#minuteOption').val() === 'minutes') {
@@ -185,4 +188,3 @@ block content
                 $('#hourOption').html('hours');
             }
         });
-
