@@ -184,7 +184,10 @@ if ('development' == app.get('env')) {
 //app.get('/users', user.list);
 
 //nav items
-app.get('/', routes.index);
+app.get('/', function(req, res) {
+	if (req.isAuthenticated()) { res.redirect('/home') }
+	res.render('index', { title: 'index' });
+});
 
 app.get('/home', ensureAuthenticated, function(req, res){
 	User.findOne({username: req.user.username}, 'activities', function(error, data){
