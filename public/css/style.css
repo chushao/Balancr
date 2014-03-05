@@ -6,6 +6,16 @@ body {
     padding-bottom: 30px;
 }
 
+.instBody {
+    overflow-x: hidden;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url('../images/background3.png');
+    background-repeat:no-repeat;
+    display: compact;
+    padding-bottom: 30px;
+    margin-bottom: -30px;
+}
+
 .link {
     color: #EAA030;
 }
@@ -175,6 +185,9 @@ body {
 .W-100 {
     width: 100%;
 }
+.W-50 {
+    width: 50%;
+}
 .Ta-c {
     text-align: center;
 }
@@ -192,6 +205,9 @@ body {
 }
 .Mt-neg-30 {
     margin-top: -30px;
+}
+.Mt-20 {
+    margin-top: 20px;
 }
 .Mb-20 {
     margin-bottom: 20px;
@@ -222,4 +238,8 @@ body {
 }
 input[type=submit] {
     font-weight: bold;
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
 }
