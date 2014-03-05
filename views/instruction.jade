@@ -2,7 +2,7 @@ extends layoutNoNav
 
 block content
     .instBody
-        #carousel-example-generic.carousel.slide 
+        #carousel-example-generic.carousel.slide(data-ride="carousel")
           .carousel-inner
             .item.active
               img(src='/images/carousel0.png', width='85%', alt='')
@@ -27,10 +27,9 @@ block content
           a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
             span.glyphicon.glyphicon-chevron-right
         .row
-            .col-xs-5
-                .center-ok
-                    a(href="/home")
-                        button.btn.btn-default.W-100.link.Fw-b I'm ready!
+            .col-xs-12.Ta-c
+                a(href="/home")
+                    button.btn.btn-primary.Fw-b.W-50.Mt-20 I'm ready!
 
 
 
