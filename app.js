@@ -1530,7 +1530,7 @@ app.post('/signup', function (req, res, next) {
 		if(err) throw err;
 		req.login(user, function(err){
 			if(err) return next(err);
-			return res.redirect("/home");
+			return res.redirect("/instruction");
 		});
 	});
 });
@@ -1538,6 +1538,9 @@ app.get('/resetpassword', routes.resetpassword);
 
 //Unused for now
 //app.get('/login', login.view);
+app.get('/instruction', function(req, res){
+	res.render('instruction', { title: 'instruction' });
+});
 
 app.get('/logout', function(req, res){
 	req.logout();

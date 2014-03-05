@@ -6,6 +6,14 @@ body {
     padding-bottom: 30px;
 }
 
+.instBody {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url('../images/background3.png');
+    background-repeat:no-repeat;
+    display: compact;
+    padding-bottom: 30px;
+}
+
 .link {
     color: #EAA030;
 }
@@ -222,4 +230,8 @@ body {
 }
 input[type=submit] {
     font-weight: bold;
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
 }
