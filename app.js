@@ -1336,13 +1336,34 @@ app.get('/calendar/:path', ensureAuthenticated, function(req, res) {
 });
 app.post('/calendar/:path', ensureAuthenticated, function(req, res) {
 	if (req.body.start[1] == '') {
-		var dateArr = req.body.start[0].split("-");
-		var redirString = "/" + req.params.path + "/" + dateArr[0] + "/" + dateArr[1] + "/" + dateArr[2];
+		if (req.body.start[0] !== '') {
+			var dateArr = req.body.start[0].split("-");
+			var redirString = "/" + req.params.path + "/" + dateArr[0] + "/" + dateArr[1] + "/" + dateArr[2];
+		} else {
+			var dateArr = new Date();
+				dateArr.setHours(0,0,0,0);
+			var	mm = dateArr.getMonth() + 1,
+				dd = dateArr.getDate(),
+				yyyy = dateArr.getFullYear();
+			var redirString = "/" + req.params.path + "/" + mm + "/" + dd + "/" + yyyy;
+		}
 		res.redirect(redirString);
 	} else {
-		var startArr = req.body.start[0].split("-");
+
+		if (req.body.start[0] !== '') {
+			var startArr = req.body.start[0].split("-");
+			var startmm = startArr[0],
+				startdd = startArr[1],
+				startyyyy = startArr[2];
+		} else {
+			var dateArr = new Date();
+				dateArr.setHours(0,0,0,0);
+			var	startmm = dateArr.getMonth() + 1,
+				startdd = dateArr.getDate(),
+				startyyyy = dateArr.getFullYear();
+		}
 		var endArr = req.body.start[1].split("-");
-		var redirString = "/" + req.params.path + "/" + startArr[0] + "/" + startArr[1] + "/" + startArr[2] + "/" + endArr[0] + "/" + endArr[1] + "/" + endArr[2];
+		var redirString = "/" + req.params.path + "/" + startmm + "/" + startdd + "/" + startyyyy + "/" + endArr[0] + "/" + endArr[1] + "/" + endArr[2];
 		res.redirect(redirString);
 
 	}
