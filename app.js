@@ -1225,6 +1225,14 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 			totalPercentAway = -1;
 		}
 
+		if(isNaN(currentWorkGoal)) {
+			currentWorkGoal = 0;
+		}
+
+		if(isNaN(currentPlayGoal)) {
+			currentPlayGoal = 0;
+		}
+
 		res.render('statistics', { pageData: { 
 			longestActivityName: longestActivityName,
 			bestActivity: bestActivity,

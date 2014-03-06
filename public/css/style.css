@@ -157,6 +157,22 @@ body {
     -moz-border-radius: 15px;
     border-radius: 15px;
 }
+.colorSmall {
+    margin-top: -20px;
+    margin-left: -10px;
+    width: 15px;
+    height: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+.colorSmallGoal {
+    margin-top: -20px;
+    margin-left: 0px;
+    width: 15px;
+    height: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
 .statistics {
     width: 90%;
     margin-left: 5%;
@@ -214,6 +230,9 @@ body {
 }
 .Mb-10 {
     margin-bottom: 10px;
+}
+.Mt-10 {
+    margin-top: 10px;
 }
 .Mstart-neg-5 {
     margin-left: -5px;
