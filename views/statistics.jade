@@ -4,52 +4,63 @@ block content
     .page
         .pageHeading
             span.heading statistics
-            span.subheading
-                //- a(href="calendar").link This week
-                    span.glyphicon.glyphicon-chevron-right
+            span.subheading Past 7 days
+                //a(href="calendar").link Past 7 days
+                    //span.glyphicon.glyphicon-chevron-right
         .pageContent
-            .statistics
-                .stat In the past 7 days...
-            canvas#canvas(height="500px", width="500px")
+            .statistics.Mb-20
+                span Goal Status
+             canvas#canvas(height="500px", width="500px")
             table.table.table-condensed.table-striped#doughnutTable
                 tr
                     th
-                    th.category.Ta-start Category
-                    th.category.Ta-start Actual
                     th
-                        .color(style='background-color: #F38630;')
-                    th.category.Ta-start Goal
+                    th.category &nbsp;&nbsp;Now
+                        .colorSmall(style='background-color: #F38630;')
+                    th.category &nbsp;&nbsp;&nbsp;&nbsp;Goal
+                        .colorSmallGoal(style='background-color: #69D2E7;')
                     th
-                        .color(style='background-color: #69D2E7;')
                 tr
                     td
                     td.category.Ta-start Work
-                    td.percent #{pageData.currentWorkGoal}%
-                    td
-                    td.percent #{pageData.workGoal}%
+                    td.percent #{pageData.currentWorkGoal}
+                        span.percentSign %
+                    td.percent #{pageData.workGoal}
+                        span.percentSign %
                     td.category.Ta-start
-                        a(href="/details/workplay/work").link
-                            span.glyphicon.glyphicon-list
+                        a(href="/details/workplay/work")
+                            btn.btn.btn-default
+                                span.glyphicon.glyphicon-list.link
                 tr
                     td
                     td.category.Ta-start Play
-                    td.percent #{pageData.currentPlayGoal}%
-                    td
-                    td.percent #{pageData.playGoal}%
+                    td.percent #{pageData.currentPlayGoal}
+                        span.percentSign %
+                    td.percent #{pageData.playGoal}
+                        span.percentSign %
                     td.category.Ta-start
-                        a(href="/details/workplay/play").link
-                            span.glyphicon.glyphicon-list
+                        a(href="/details/workplay/play")
+                            btn.btn.btn-default
+                                span.glyphicon.glyphicon-list.link
             .statistics
                 if pageData.totalPercentAway == -1
                     .stat You haven't done any activities lately. Add some to get started!
                 else if pageData.totalPercentAway == 0
-                    .stat You are at your goal of #{pageData.workGoal}% work and #{pageData.playGoal}% play! Way to balance!
-                    .stat You have been doing a lot of #{pageData.bestActivity}. #{pageData.activityPercent}% of your activities were #{pageData.bestActivity}! 
-                    .stat You did the most of your "#{pageData.longestActivityName}" activity.
+                    .stat 
+                    span.Fw-b You are at your goal
+                    span of #{pageData.workGoal}% work and #{pageData.playGoal}% play! Way to balance!
                 else
-                    .stat You are #{pageData.totalPercentAway}% away from reaching your goal of #{pageData.workGoal}% work and #{pageData.playGoal}% play! Currently you are at #{pageData.currentWorkGoal}% work and #{pageData.currentPlayGoal}% play.
-                    .stat You have been doing a lot of #{pageData.bestActivity}. #{pageData.activityPercent}% of your activities were #{pageData.bestActivity}! 
-                    .stat You did the most of your "#{pageData.longestActivityName}" activity.
+                    .stat You are 
+                        span.Fw-b #{pageData.totalPercentAway}% away from reaching your goal 
+                        span of #{pageData.workGoal}% work and #{pageData.playGoal}% play! Currently you are at #{pageData.currentWorkGoal}% work and #{pageData.currentPlayGoal}% 
+                        span play.
+                span.Fw-b Trends
+                .stat.Mt-10 You have been doing a lot of 
+                    span.Fw-b #{pageData.bestActivity}
+                    span . #{pageData.activityPercent}% of your activities were #{pageData.bestActivity}! 
+                .stat You did the most of your 
+                    span.Fw-b "#{pageData.longestActivityName}" 
+                    span activity.
     script.
         var data = {
             labels : ["Work","Play"],

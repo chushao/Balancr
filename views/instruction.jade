@@ -1,0 +1,42 @@
+extends layoutNoNav
+
+block content
+    .instBody
+        #carousel-example-generic.carousel.slide(data-ride="carousel")
+          .carousel-inner
+            .item.active
+              img(src='/images/carousel0.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel1.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel2.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel3.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel4.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel5.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel6.png', width='85%', alt='')
+            .item
+              img(src='/images/carousel7.png', width='85%', alt='')    
+            .item
+              img(src='/images/carousel8.png', width='85%', alt='')
+          a.left.carousel-control(href='#carousel-example-generic', data-slide='prev') 
+            span.glyphicon.glyphicon-chevron-left
+          a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
+            span.glyphicon.glyphicon-chevron-right
+        .row
+            .col-xs-12.Ta-c
+                a(href="/home")
+                    button.btn.btn-primary.Fw-b.W-50.Mt-20 I'm ready!
+
+
+
+script(type='text/javascript').
+    $(document).ready(function() {
+        $('.carousel').carousel( {
+            interval: 5000,
+            wrap: false
+        })
+    });

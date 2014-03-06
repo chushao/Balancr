@@ -1,9 +1,9 @@
-extends layout
+extends layoutNoNav
 
 block content
     .loginContent
         .loginTitle 
-            span balancr
+            a(href="/") balancr
     .fields
         .row
             .col-xs-12
@@ -15,8 +15,7 @@ block content
                         label(for='password').radioOption Password
                         input.form-control(type='password', name='password', id='password', placeholder='Password')
                     .form-group
-                        input(id='submitBtn', type='submit',value='Log In')
-
+                        input(id='submitBtn', type='submit',value='Sign In').btn.btn-primary.W-100
             .col-xs-12.Ta-c
                 span Do't have an account yet? 
                     a(href="/signup").link.Fw-b Sign Up
@@ -29,5 +28,5 @@ block content
             .col-xs-12
                 a(href="/auth/facebook")
                     button.btn.btn-default.W-100
-                        <img src="http://althamarat.net/images/Facebook-Logo-White-on-Blue1.png" width="24" height="24" />
+                        <img src="images/Facebook.png" width="24" height="24" />
                         span.signIn.Fw-b Facebook sign in
