@@ -149,6 +149,7 @@ app.use(express.cookieParser());
 app.use(express.session({ secret: '08D8AF524EC4850DAE5B66ECD9E57' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -186,7 +187,7 @@ if ('development' == app.get('env')) {
 //nav items
 app.get('/', function(req, res) {
 	if (req.isAuthenticated()) { res.redirect('/home') }
-	res.render('index', { title: 'index' });
+	res.render('index', { title: 'Balancr', message: req.flash('error') });
 });
 
 app.get('/home', ensureAuthenticated, function(req, res){
@@ -1581,7 +1582,7 @@ app.get('/logout', function(req, res){
 
 //local submission of email and password
 app.post('/login',
-	passport.authenticate('local', {failureRedirect: '/'}),
+	passport.authenticate('local', {failureRedirect: '/', failureFlash: true}),
 	function (req, res) {
 		res.redirect('/home');
 	}

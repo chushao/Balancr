@@ -7,7 +7,7 @@ var User = mongoose.model('User');
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'index' });
+  res.render('index', { title: 'Balancr', message: req.flash('error') });
 };
 
 exports.signup = function(req, res){
