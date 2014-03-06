@@ -187,7 +187,7 @@ if ('development' == app.get('env')) {
 //nav items
 app.get('/', function(req, res) {
 	if (req.isAuthenticated()) { res.redirect('/home') }
-	res.render('index', { title: 'index' });
+	res.render('index', { title: 'Balancr', message: req.flash('error') });
 });
 
 app.get('/home', ensureAuthenticated, function(req, res){
