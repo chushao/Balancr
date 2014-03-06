@@ -7,6 +7,9 @@ block content
     .fields
         .row
             .col-xs-12
+                p #{message}
+        .row
+            .col-xs-12
                 form(action='/login', method='post', role="form")
                     .form-group
                         label(for='email').radioOption Email

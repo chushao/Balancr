@@ -69,7 +69,7 @@ User.statics.isValidUserPassword = function(email, password, done) {
 		hash(password, user.salt, function(err, hash){
 			if(err) return done(err);
 			if(hash == user.hash) return done(null, user);
-			done(null, false, {
+			return done(null, false, {
 				message : 'Incorrect password'
 			});
 		});
