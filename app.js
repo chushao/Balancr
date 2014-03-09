@@ -1213,12 +1213,12 @@ app.get('/statistics', ensureAuthenticated, function(req, res) {
 			}
 			
 		}
-		var activityPercent = Math.round( ((tempVal/activityVal) * 100) * 100) /100;
+		var activityPercent = Math.round( ((tempVal/activityVal) * 100) );
 		var playGoal = 100 - data.goal;
 		var workGoal = data.goal;
-		var currentWorkGoal = Math.round( ((work / (work + play)) * 100) * 100) / 100;
-		var currentPlayGoal = Math.round( ((play / (work + play)) * 100) * 100) / 100; 
-		var totalPercentAway = Math.round(Math.abs(playGoal - currentPlayGoal) * 100) / 100;
+		var currentWorkGoal = Math.round( ((work / (work + play)) * 100) );
+		var currentPlayGoal = Math.round( ((play / (work + play)) * 100) ); 
+		var totalPercentAway = Math.round(Math.abs(playGoal - currentPlayGoal) );
 
 		if(isNaN(totalPercentAway)) {
 			console.log("totalPercentAway is not a number");
