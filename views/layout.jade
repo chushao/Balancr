@@ -13,7 +13,27 @@ html
     meta(name='viewport' content='width=device-width')
     meta(name="apple-mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-status-bar-style" content="black")
-    meta(name='viewport' content='width=240, user-scalable=yes, initial-scale=0.7, maximum-scale=5.0, minimum-scale=1.0' )
+    meta(name='viewport' content='width=240, user-scalable=no, initial-scale=0.7, maximum-scale=5.0, minimum-scale=1.0' )
+    script.
+        (function(document,navigator,standalone) {
+            // prevents links from apps from oppening in mobile safari
+            // this javascript must be the first script in your <head>
+            if ((standalone in navigator) && navigator[standalone]) {
+                var curnode, location=document.location, stop=/^(a|html)$/i;
+                document.addEventListener('click', function(e) {
+                    curnode=e.target;
+                    while (!(stop).test(curnode.nodeName)) {
+                        curnode=curnode.parentNode;
+                    }
+                    // Condidions to do this only on links to your own app
+                    // if you want all links, use if('href' in curnode) instead.
+                    if('href' in curnode && ( curnode.href.indexOf('http') || ~curnode.href.indexOf(location.host) ) ) {
+                        e.preventDefault();
+                        location.href = curnode.href;
+                    }
+                },false);
+            }
+        })(document,window.navigator,'standalone');
   body
     nav.navbar.navbar-default.navbar-static-top(role="navigation")
         .container-fluid
