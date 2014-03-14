@@ -10,10 +10,12 @@
 $(document).ready(function() {
 	var abCookie = $.cookie('__utmx');
 	console.log(abCookie);
-	if (abCookie.charAt(abCookie.length - 1) == '1') {
-		console.log("ChangeD");
-		$("#workplay").remove();
-		$("<li id='workplay'> <a href='/workplay'>work/play</a></li>").insertAfter("#doughnut");
+	if (!(abCookie === undefined)) {
+		if (abCookie.charAt(abCookie.length - 1) == '1') {
+			console.log("ChangeD");
+			$("#workplay").remove();
+			$("<li id='workplay'> <a href='/workplay'>work/play</a></li>").insertAfter("#doughnut");
+		}
 	}
 
 	$("#workplay").click(function() {
