@@ -26,6 +26,9 @@ function addValidate() {
 				rules : {
 					activity: {
 						required: true
+					},
+					timeSpent: {
+						required: true
 					}
 
 				}
@@ -34,7 +37,6 @@ function addValidate() {
 		if(addActivityForm.form()) {
 		$('.validatedForm').submit();
 	}
-
 }
 
 	
