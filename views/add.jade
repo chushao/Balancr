@@ -1,6 +1,12 @@
 extends layout
 
 block content
+        script.
+            $(document).ready(function() {
+                $('#submitBtn').click(function() {
+                    addValidate();
+                    });
+                });
         .page
             .pageHeading
                 span.heading add activity
@@ -8,7 +14,7 @@ block content
             .fields
                 .row
                     .col-xs-12
-                        form(action='/add', method='post', role="form")
+                        form(class='addValidatedForm' action='/add', method='post', role="form")
                             .form-group
                                 label(for='activity').radioOption Activity
                                 input.form-control(type='text', name='activity', id='activity', placeholder='Running')

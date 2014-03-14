@@ -21,3 +21,20 @@ function validate() {
 		$('.validatedForm').submit();
 	}
 }
+function addValidate() {
+	var addActivityForm = $('.addValidatedForm').validate( {
+				rules : {
+					activity: {
+						required: true
+					}
+
+				}
+	});
+
+		if(addActivityForm.form()) {
+		$('.validatedForm').submit();
+	}
+
+}
+
+	
